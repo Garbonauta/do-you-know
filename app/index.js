@@ -7,12 +7,7 @@ import { Provider } from 'react-redux'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import * as reducers from 'redux/modules'
-
-export default function App () {
-  return (
-    "Hello, World!"
-  )
-}
+import {App} from 'containers'
 
 const composeEnhancers = composeWithDevTools({})
 
@@ -28,7 +23,6 @@ const store = createStore(
     applyMiddleware(thunk, routerMiddleware(history))
   )
 )
-
 
 ReactDOM.render(
   <Provider store={store}>

@@ -13,7 +13,7 @@ const PATHS = {
   build: path.join(__dirname, 'dist'),
 }
 
-const LAUNCH_COMMAND = process.env.npm_lifecycle_event
+const LAUNCH_COMMAND = process.env.NODE_ENV
 
 const isProduction = LAUNCH_COMMAND === 'production'
 process.env.BABEL_ENV = LAUNCH_COMMAND
@@ -54,6 +54,7 @@ const base = {
     modules: ['node_modules', path.resolve('./app')],
   },
 }
+const Dotenv = require('dotenv-webpack')
 
 const developmentConfig = {
   devtool: 'cheap-module-inline-source-map',
@@ -64,12 +65,12 @@ const developmentConfig = {
     progress: true,
     historyApiFallback: true,
   },
-  plugins: [HTMLWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()],
+  plugins: [HTMLWebpackPluginConfig, new webpack.HotModuleReplacementPlugin(), new Dotenv()],
 }
 
 const productionConfig = {
   devtool: 'cheap-module-source-map',
-  plugins: [HTMLWebpackPluginConfig, productionPlugin],
+  plugins: [HTMLWebpackPluginConfig, productionPlugin, new Dotenv()],
 }
 
 export default Object.assign({}, base, isProduction === true ? productionConfig : developmentConfig)

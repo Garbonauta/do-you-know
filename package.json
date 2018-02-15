@@ -4,21 +4,23 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "firebase": "^4.9.1",
+    "dotenv-webpack": "^1.5.4",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
     "react-scripts": "1.1.1",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "styled-components": "^3.1.6"
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "production": "webpack -p",
+    "build": "NODE_ENV='production' webpack -p",
     "lint": "eslint app/.",
     "fix": "eslint --fix app/."
   },
@@ -34,7 +36,6 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.9",
-    "dotenv": "^5.0.0",
     "eslint": "^4.17.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
