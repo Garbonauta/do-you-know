@@ -1,8 +1,9 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Authenticate } from 'components'
 import { bindActionCreators } from 'redux'
 import * as userActionCreators from 'redux/modules/users'
+import * as friendsActionCreators from 'redux/modules/friends'
 import { connect } from 'react-redux'
 
 class AuthenticateContainer extends Component {
@@ -10,10 +11,12 @@ class AuthenticateContainer extends Component {
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
     fetchAndHandleAuthedUser: PropTypes.func.isRequired,
+    fetchAndHandleUserFriends: PropTypes.func.isRequired,
   }
+
   handleAuth = () => {
-    //TODO - AUTH
-    console.log('here')
+    this.props.fetchAndHandleAuthedUser()
+      .then(() => this.props.fetchAndHandleUserFriends())
   }
 
   render () {
@@ -33,7 +36,10 @@ function mapStateToProps ({users}) {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators(
-    {...userActionCreators}, dispatch)
+    {
+      ...userActionCreators,
+      ...friendsActionCreators,
+    }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthenticateContainer)

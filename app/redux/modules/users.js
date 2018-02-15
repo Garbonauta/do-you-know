@@ -1,8 +1,10 @@
-import { Map, fromJS } from 'immutable'
+import {Map, fromJS} from 'immutable'
 import auth from 'helpers/auth'
-import { formatUserInfo } from 'helpers/utils'
+import {formatUserInfo} from 'helpers/utils'
+import {getUserFromFacebookAPI} from 'helpers/api'
 
 const AUTH_USER = 'AUTH_USER'
+const AUTH_USER_ERROR = 'AUTH_USER_ERROR'
 const UNAUTH_USER = 'UNAUTH_USER'
 const FETCHING_USER = 'FETCHING_USER'
 const FETCHING_USER_SUCCESS = 'FETCHING_USER_SUCCESS'
@@ -12,6 +14,14 @@ export function authUser (uid) {
   return {
     type: AUTH_USER,
     uid,
+  }
+}
+
+function authUserError (error) {
+  console.warn(error)
+  return {
+    type: AUTH_USER_ERROR,
+    error: 'Could Not Authorize Facebook User',
   }
 }
 
@@ -44,23 +54,40 @@ function fetchingUserFailure (error) {
   }
 }
 
-//TODO - figure how to auth again
 export function fetchAndHandleAuthedUser () {
   return function (dispatch) {
     dispatch(fetchingUser())
-    return auth().then(({user, credential}) => {
-      const [userData] = user.providerData
-      const userInfo = formatUserInfo(
-        {
-          name: userData.displayName,
-          avatar: userData.photoURL,
-          uid: user.uid,
-        })
-      return dispatch(fetchingUserSuccess(user.uid, userInfo, Date.now()))
-    })
-      // .then(({user}) => saveUser(user))
-      .then((user) => dispatch(authUser(user.uid, user.accessToken)))
-      .catch((error) => dispatch(fetchingUserFailure(error)))
+    return auth()
+      .then(({authResponse: {userID}}) => dispatch(authUser(userID)))
+      .catch((error) => dispatch(authUserError(error)))
+      .then(() => getUserFromFacebookAPI('me'))
+      .catch((error) => dispatch(authUserError(error)))
+      .then(me => {
+        const userInfo = formatUserInfo(me)
+        return dispatch(fetchingUserSuccess(me.id, userInfo, Date.now()))
+      })
+  }
+}
+
+const initialUserState = Map({
+  lastUpdated: 0,
+  info: {
+    name: '',
+    uid: '',
+    link: '',
+    avatar: '',
+  },
+})
+
+export function user (state = initialUserState, action) {
+  switch (action.type) {
+    case FETCHING_USER_SUCCESS :
+      return state.merge({
+        lastUpdated: action.timestamp,
+        info: action.user,
+      })
+    default:
+      return state
   }
 }
 
@@ -78,6 +105,12 @@ export default function users (state = initialState, action) {
         isAuthed: true,
         authedId: action.uid,
       })
+    case AUTH_USER_ERROR :
+      return state.merge({
+        isFetching: false,
+        isAuthed: false,
+        authedId: '',
+      })
     case UNAUTH_USER :
       return state.merge({
         isAuthed: false,
@@ -91,6 +124,7 @@ export default function users (state = initialState, action) {
       return state.merge({
         isFetching: false,
         error: '',
+        [action.uid]: user(state.get(action.uid), action),
       })
     case FETCHING_USER_ERROR :
       return state.merge({

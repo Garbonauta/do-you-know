@@ -1,13 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FacebookAuthButton } from 'components'
 import { CenteredContainer } from 'sharedStyles'
+import { FacebookButton } from './Styles'
 
 export default function Authenticate ({isFetching, onAuth}) {
   return (
     <CenteredContainer>
       <h1>{'Authenticate'}</h1>
-      <FacebookAuthButton onAuth={onAuth} isFetching={isFetching}/>
+      <FacebookButton onClick={onAuth} fontSize='1.5em' >
+        {isFetching
+          ? 'Loading'
+          : 'Login with facebook'
+        }
+      </FacebookButton>
     </CenteredContainer>
   )
 }

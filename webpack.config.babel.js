@@ -65,7 +65,7 @@ const developmentConfig = {
     progress: true,
     historyApiFallback: true,
   },
-  plugins: [HTMLWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()],
+  plugins: [HTMLWebpackPluginConfig, new webpack.HotModuleReplacementPlugin(), new Dotenv()],
 }
 
 const productionConfig = {
