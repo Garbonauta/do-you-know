@@ -65,12 +65,12 @@ const developmentConfig = {
     progress: true,
     historyApiFallback: true,
   },
-  plugins: [HTMLWebpackPluginConfig, new webpack.HotModuleReplacementPlugin(), new Dotenv()],
+  plugins: [HTMLWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()],
 }
 
 const productionConfig = {
   devtool: 'cheap-module-source-map',
-  plugins: [HTMLWebpackPluginConfig, productionPlugin, new Dotenv()],
+  plugins: [HTMLWebpackPluginConfig, productionPlugin],
 }
 
 export default Object.assign({}, base, isProduction === true ? productionConfig : developmentConfig)

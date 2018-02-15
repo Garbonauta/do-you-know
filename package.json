@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "dotenv-webpack": "^1.5.4",
+    "express": "^4.16.2",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.0",
