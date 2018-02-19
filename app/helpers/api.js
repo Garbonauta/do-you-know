@@ -1,17 +1,11 @@
-const baseFields = 'id,name,first_name,middle_name,last_name,address,link,picture'
+const server = process.env.SERVER_URL
 
-export function getUserFromFacebookAPI (userId, fields = baseFields) {
-  return new Promise((resolve, reject) => {
-    FB.api(`/${userId}?fields=${fields}`, function (response) {
-      resolve(response)
-    })
-  })
-}
-
-export function getUserFriendsFromFacebookAPI (userId, fields = baseFields) {
-  return new Promise((resolve, reject) => {
-    FB.api(`/${userId}/friends?fields=${fields}`, function (response) {
-      resolve(response)
-    })
+export function authFromServer (accessToken) {
+  return fetch(`${server}/auth`, {
+    method: 'get',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/json',
+    },
   })
 }

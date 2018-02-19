@@ -1,7 +1,9 @@
 import {Map, fromJS} from 'immutable'
-import auth from 'helpers/auth'
 import {formatUserInfo} from 'helpers/utils'
-import {getUserFromFacebookAPI} from 'helpers/api'
+import {authFromServer} from 'helpers/api'
+import Auth from 'helpers/Auth'
+
+const auth = new Auth()
 
 const AUTH_USER = 'AUTH_USER'
 const AUTH_USER_ERROR = 'AUTH_USER_ERROR'
@@ -10,10 +12,12 @@ const FETCHING_USER = 'FETCHING_USER'
 const FETCHING_USER_SUCCESS = 'FETCHING_USER_SUCCESS'
 const FETCHING_USER_ERROR = 'FETCHING_USER_ERROR'
 
-export function authUser (uid) {
+export function authUser ({accessToken, idToken, expiresAt}) {
   return {
     type: AUTH_USER,
-    uid,
+    accessToken,
+    idToken,
+    expiresAt,
   }
 }
 
@@ -54,18 +58,27 @@ function fetchingUserFailure (error) {
   }
 }
 
+export function loginUser () {
+  return auth.login()
+}
+function verifyUserAuthorization (dispatch) {
+
+}
+
 export function fetchAndHandleAuthedUser () {
   return function (dispatch) {
     dispatch(fetchingUser())
-    return auth()
-      .then(({authResponse: {userID}}) => dispatch(authUser(userID)))
+    return auth.handleAuthentication()
+      .then((authResponse) => dispatch(authUser(authResponse)))
       .catch((error) => dispatch(authUserError(error)))
-      .then(() => getUserFromFacebookAPI('me'))
-      .catch((error) => dispatch(authUserError(error)))
-      .then(me => {
-        const userInfo = formatUserInfo(me)
-        return dispatch(fetchingUserSuccess(me.id, userInfo, Date.now()))
-      })
+      .then((response) => authFromServer(response.accessToken))
+      .catch(err => console.log(err))
+    // .then(() => getUserFromFacebookAPI('me'))
+    // .catch((error) => dispatch(authUserError(error)))
+    // .then(me => {
+    //   const userInfo = formatUserInfo(me)
+    //   return dispatch(fetchingUserSuccess(me.id, userInfo, Date.now()))
+    // })
   }
 }
 
@@ -96,6 +109,9 @@ const initialState = Map({
   isFetching: true,
   error: '',
   authedId: '',
+  accessToken: '',
+  idToken: '',
+  expiresAt: '',
 })
 
 export default function users (state = initialState, action) {
@@ -103,13 +119,16 @@ export default function users (state = initialState, action) {
     case AUTH_USER :
       return state.merge({
         isAuthed: true,
-        authedId: action.uid,
+        accessToken: action.accessToken,
+        idToken: action.idToken,
+        expiresAt: action.expiresAt,
       })
     case AUTH_USER_ERROR :
       return state.merge({
         isFetching: false,
         isAuthed: false,
         authedId: '',
+        error: action.error,
       })
     case UNAUTH_USER :
       return state.merge({

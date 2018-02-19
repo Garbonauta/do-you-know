@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { CenteredContainer } from 'sharedStyles'
 import { FacebookButton } from './Styles'
 
-export default function Authenticate ({isFetching, onAuth}) {
+export default function Login ({isFetching, onAuth}) {
   return (
     <CenteredContainer>
-      <h1>{'Authenticate'}</h1>
+      <h1>{'Login'}</h1>
       <FacebookButton onClick={onAuth} fontSize='1.5em' >
         {isFetching
           ? 'Loading'
@@ -16,7 +16,7 @@ export default function Authenticate ({isFetching, onAuth}) {
     </CenteredContainer>
   )
 }
-Authenticate.propTypes = {
+Login.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   onAuth: PropTypes.func.isRequired,
 }

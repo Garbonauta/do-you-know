@@ -1,28 +1,25 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Authenticate } from 'components'
 import { bindActionCreators } from 'redux'
-import * as userActionCreators from 'redux/modules/users'
-import * as friendsActionCreators from 'redux/modules/friends'
 import { connect } from 'react-redux'
+import * as userActionCreators from 'redux/modules/users'
+import { Login } from 'components'
 
-class AuthenticateContainer extends Component {
+class LoginContainer extends Component {
   static propTypes = {
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
-    fetchAndHandleAuthedUser: PropTypes.func.isRequired,
-    fetchAndHandleUserFriends: PropTypes.func.isRequired,
+    loginUser: PropTypes.func.isRequired,
   }
 
   handleAuth = () => {
-    this.props.fetchAndHandleAuthedUser()
-      .then(() => this.props.fetchAndHandleUserFriends())
+    this.props.loginUser()
   }
 
   render () {
     const {isFetching, error} = this.props
     return (
-      <Authenticate onAuth={this.handleAuth} isFetching={isFetching} error={error}/>
+      <Login onAuth={this.handleAuth} isFetching={isFetching} error={error}/>
     )
   }
 }
@@ -38,8 +35,7 @@ function mapDispatchToProps (dispatch) {
   return bindActionCreators(
     {
       ...userActionCreators,
-      ...friendsActionCreators,
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthenticateContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)
