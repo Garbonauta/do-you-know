@@ -3,10 +3,10 @@ import { oAuthAuthToObjAuth } from 'helpers/utils'
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
-    domain: 'garbonauta.auth0.com',
+    domain: process.env.AUTH_0_DOMAIN,
     clientID: process.env.AUTH_0_CLIENT_ID,
     redirectUri: process.env.CALLBACK_URL,
-    audience: 'https://api.doyouknow.com',
+    audience: process.env.AUTH_0_AUDIENCE,
     responseType: 'token id_token',
     scope: 'openid',
   })
