@@ -1,6 +1,5 @@
 import {Map, fromJS} from 'immutable'
-import {formatUserInfo} from 'helpers/utils'
-import {authFromServer} from 'helpers/api'
+import {getAuthUserProfile} from 'helpers/api'
 import Auth from 'helpers/Auth'
 
 const auth = new Auth()
@@ -61,23 +60,18 @@ function fetchingUserFailure (error) {
 export function loginUser () {
   return auth.login()
 }
-function verifyUserAuthorization (dispatch) {
 
+function chainError (err) {
+  return Promise.reject(err)
 }
 
 export function fetchAndHandleAuthedUser () {
   return function (dispatch) {
     dispatch(fetchingUser())
     return auth.handleAuthentication()
-      .then((authResponse) => dispatch(authUser(authResponse)))
-      .catch((error) => dispatch(authUserError(error)))
-      .then((response) => authFromServer(response.accessToken))
-      .catch(err => console.log(err))
-    // .then(() => getUserFromFacebookAPI('me'))
-    // .catch((error) => dispatch(authUserError(error)))
-    // .then(me => {
-    //   const userInfo = formatUserInfo(me)
-    //   return dispatch(fetchingUserSuccess(me.id, userInfo, Date.now()))
+      .then(authResponse => dispatch(authUser(authResponse)), chainError)
+      .then(response => getAuthUserProfile(response.accessToken), chainError)
+      .catch(error => dispatch(authUserError(error)))
     // })
   }
 }
@@ -108,7 +102,6 @@ const initialState = Map({
   isAuthed: false,
   isFetching: true,
   error: '',
-  authedId: '',
   accessToken: '',
   idToken: '',
   expiresAt: '',
@@ -127,13 +120,17 @@ export default function users (state = initialState, action) {
       return state.merge({
         isFetching: false,
         isAuthed: false,
-        authedId: '',
+        accessToken: '',
+        idToken: '',
+        expiresAt: '',
         error: action.error,
       })
     case UNAUTH_USER :
       return state.merge({
         isAuthed: false,
-        autehdId: '',
+        accessToken: '',
+        idToken: '',
+        expiresAt: '',
       })
     case FETCHING_USER :
       return state.merge({
