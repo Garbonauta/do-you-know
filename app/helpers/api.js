@@ -8,4 +8,8 @@ export function getAuthUserProfile (accessToken) {
       'Accept': 'application/json',
     },
   })
+    .then(response => {
+      return response.json()
+        .then(data => response.ok ? data : Promise.reject(data))
+    })
 }

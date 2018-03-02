@@ -3,10 +3,10 @@ import { oAuthAuthToObjAuth } from 'helpers/utils'
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
-    domain: process.env.AUTH_0_DOMAIN,
-    clientID: process.env.AUTH_0_CLIENT_ID,
+    domain: process.env.AUTH0_DOMAIN,
+    clientID: process.env.AUTH0_CLIENT_ID,
     redirectUri: process.env.CALLBACK_URL,
-    audience: process.env.AUTH_0_AUDIENCE,
+    audience: process.env.AUTH0_AUDIENCE,
     responseType: 'token id_token',
     scope: 'openid',
   })

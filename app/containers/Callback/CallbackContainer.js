@@ -11,7 +11,7 @@ class CallbackContainer extends Component {
   }
   componentDidMount () {
     this.props.fetchAndHandleAuthedUser()
-      .then(response => console.log('fetchUser', response))
+      .then(json => console.log('JSON', json))
   }
   render () {
     return (
