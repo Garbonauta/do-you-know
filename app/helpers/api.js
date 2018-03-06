@@ -1,7 +1,7 @@
 const server = process.env.SERVER_URL
 
 export function getAuthUserProfile (accessToken) {
-  return fetch(`${server}/auth`, {
+  return fetch(`${server}/login`, {
     method: 'get',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
