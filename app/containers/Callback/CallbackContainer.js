@@ -8,6 +8,7 @@ import { Callback } from 'components'
 class CallbackContainer extends Component {
   static propTypes = {
     fetchAndHandleAuthedUser: PropTypes.func.isRequired,
+    messages: PropTypes.object.isRequired,
   }
   componentDidMount () {
     this.props.fetchAndHandleAuthedUser()
@@ -15,13 +16,16 @@ class CallbackContainer extends Component {
   }
   render () {
     return (
-      <Callback/>
+      <Callback messages={this.props.messages}/>
     )
   }
 }
 
-function mapStateToProps (props) {
+function mapStateToProps ({intl}) {
   return {
+    messages: {
+      loading: intl.messages.loading,
+    },
   }
 }
 
