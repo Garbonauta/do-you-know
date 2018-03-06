@@ -66,13 +66,15 @@ function chainError (err) {
 }
 
 export function fetchAndHandleAuthedUser () {
-  return function (dispatch) {
-    dispatch(fetchingUser())
-    return auth.handleAuthentication()
-      .then(authResponse => dispatch(authUser(authResponse)), chainError)
-      .then(response => getAuthUserProfile(response.accessToken), chainError)
-      .catch(error => dispatch(authUserError(error)))
-    // })
+  return async function (dispatch) {
+    try {
+      dispatch(fetchingUser())
+      const response = await auth.handleAuthentication()
+      dispatch(authUser(response))
+      return await getAuthUserProfile(response.accessToken)
+    } catch (error) {
+      return dispatch(authUserError(error))
+    }
   }
 }
 

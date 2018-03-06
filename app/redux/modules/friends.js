@@ -1,6 +1,4 @@
 import {Map, fromJS} from 'immutable'
-import {getUserFriendsFromFacebookAPI} from 'helpers/api'
-import {formatFriends} from 'helpers/utils'
 
 const FETCHING_FRIENDS = 'FETCHING_FRIENDS'
 const FETCHING_FRIENDS_ERROR = 'FETCHING_FRIENDS_ERROR'
@@ -25,19 +23,6 @@ function fetchingFriendsSuccess (friends, count) {
     type: FETCHING_FRIENDS_SUCCESS,
     friends,
     count,
-  }
-}
-
-export function fetchAndHandleUserFriends () {
-  return function (dispatch) {
-    dispatch(fetchingFriends())
-    getUserFriendsFromFacebookAPI('me')
-      .then(({data: friendsList}) => {
-        const friendsObject = formatFriends(friendsList)
-
-        return dispatch(fetchingFriendsSuccess(friendsObject, friendsList.length))
-      })
-      .catch(error => dispatch(fetchingFriendsError(error)))
   }
 }
 

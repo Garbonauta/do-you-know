@@ -5,15 +5,3 @@ export function oAuthAuthToObjAuth (authResult) {
     expiresAt: (authResult.expiresIn * 1000) + new Date().getTime(),
   }
 }
-
-export function formatFriends (friends) {
-  return friends.reduce((accum, {id: uid, name, link, picture: {data: {url: avatar}}}, curIndex) => {
-    accum[uid] = {
-      uid,
-      name,
-      link,
-      avatar,
-    }
-    return accum
-  }, {})
-}
