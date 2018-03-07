@@ -8,7 +8,6 @@ import { LoginContainer, CallbackContainer, HomeContainer } from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
 import { ContentContainer } from './Styles'
-import {changeRoute} from '../../redux/modules/route'
 
 class App extends Component {
   static propTypes = {
@@ -21,9 +20,9 @@ class App extends Component {
     const pathname = window.location.pathname
     if (pathname && (pathname !== '/callback')) {
       try {
-        this.props.handleAuthedUserFromBrowserCache()
+        await this.props.handleAuthedUserFromBrowserCache()
       } catch (error) {
-        changeRoute('/')
+        this.props.changeRoute('/')
       }
     }
   }

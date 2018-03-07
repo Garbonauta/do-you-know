@@ -94,16 +94,14 @@ export function handleAuthedUserFromBrowserCache () {
     dispatch(fetchingUser())
     if (auth.isAuthenticated()) {
       try {
-        await authAction(dispatch, auth.getAuthenticated())
-        return true
+        return await authAction(dispatch, auth.getAuthenticated())
       } catch (error) {
         dispatch(authUserError(error))
-        throw error
       }
     }
     const error = 'User is not authenticated'
     dispatch(authUserError(error))
-    throw new Error(error)
+    return Promise.reject(error)
   }
 }
 
