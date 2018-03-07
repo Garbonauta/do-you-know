@@ -1,4 +1,4 @@
-import {Map, fromJS} from 'immutable'
+import { Map, fromJS } from 'immutable'
 
 const FETCHING_FRIENDS = 'FETCHING_FRIENDS'
 const FETCHING_FRIENDS_ERROR = 'FETCHING_FRIENDS_ERROR'
