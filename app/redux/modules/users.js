@@ -64,19 +64,52 @@ export function loginUser () {
   return auth.login()
 }
 
+async function authAction (dispatch, {uid, accessToken, idToken, expiresAt}) {
+  try {
+    const {friends, ...user} = await getAuthUserProfile(accessToken)
+    dispatch(fetchingUserSuccess(uid, user, Date.now()))
+    dispatch(fetchingFriendsSuccess(friendsObjectFromArray(friends), friends.length))
+    return dispatch(authUser({uid, accessToken, idToken, expiresAt}))
+  } catch (error) {
+    throw error
+  }
+}
+
 export function fetchAndHandleAuthedUser () {
   return async function (dispatch) {
     try {
       dispatch(fetchingUser())
       const {accessToken, idToken, expiresAt} = await auth.handleAuthentication()
       const {sub: uid} = decodeJwt(accessToken)
-      const {friends, ...user} = await getAuthUserProfile(accessToken)
-      dispatch(fetchingUserSuccess(uid, user, Date.now()))
-      dispatch(fetchingFriendsSuccess(friendsObjectFromArray(friends), friends.length))
-      return dispatch(authUser({uid, accessToken, idToken, expiresAt}))
+      authAction(dispatch, {uid, accessToken, idToken, expiresAt})
     } catch (error) {
-      return dispatch(authUserError(error))
+      dispatch(authUserError(error))
+      throw error
     }
+  }
+}
+
+export function handleAuthedUserFromBrowserCache () {
+  return async function (dispatch) {
+    dispatch(fetchingUser())
+    if (auth.isAuthenticated()) {
+      try {
+        await authAction(dispatch, auth.getAuthenticated())
+        return true
+      } catch (error) {
+        dispatch(authUserError(error))
+        throw error
+      }
+    }
+    const error = 'User is not authenticated'
+    dispatch(authUserError(error))
+    throw new Error(error)
+  }
+}
+
+export function invalidAuth (error) {
+  return function (dispatch) {
+    dispatch(authUserError(error))
   }
 }
 

@@ -1,5 +1,5 @@
 import auth0 from 'auth0-js'
-import { oAuthAuthToObjAuth } from 'helpers/utils'
+import { oAuthAuthToObjAuth, decodeJwt } from 'helpers/utils'
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -45,6 +45,20 @@ export default class Auth {
 
   isAuthenticated () {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'))
-    return new Date().getTime() < expiresAt
+    return expiresAt ? new Date().getTime() < expiresAt : false
+  }
+
+  getAuthenticated () {
+    const accessToken = localStorage.getItem('access_token')
+    const idToken = localStorage.getItem('id_token')
+    const expiresAt = localStorage.getItem('expires_at')
+    const uid = decodeJwt(accessToken).sub
+
+    return {
+      uid,
+      accessToken,
+      idToken,
+      expiresAt,
+    }
   }
 }
