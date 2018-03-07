@@ -18,7 +18,7 @@ function fetchingFriendsError (error) {
   }
 }
 
-function fetchingFriendsSuccess (friends, count) {
+export function fetchingFriendsSuccess (friends, count) {
   return {
     type: FETCHING_FRIENDS_SUCCESS,
     friends,

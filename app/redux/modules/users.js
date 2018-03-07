@@ -1,5 +1,7 @@
-import {Map, fromJS} from 'immutable'
-import {getAuthUserProfile} from 'helpers/api'
+import { Map, fromJS } from 'immutable'
+import { decodeJwt, friendsObjectFromArray } from 'helpers/utils'
+import { fetchingFriendsSuccess } from './friends'
+import { getAuthUserProfile } from 'helpers/api'
 import Auth from 'helpers/Auth'
 
 const auth = new Auth()
@@ -11,9 +13,10 @@ const FETCHING_USER = 'FETCHING_USER'
 const FETCHING_USER_SUCCESS = 'FETCHING_USER_SUCCESS'
 const FETCHING_USER_ERROR = 'FETCHING_USER_ERROR'
 
-export function authUser ({accessToken, idToken, expiresAt}) {
+export function authUser ({uid, accessToken, idToken, expiresAt}) {
   return {
     type: AUTH_USER,
+    uid,
     accessToken,
     idToken,
     expiresAt,
@@ -61,17 +64,16 @@ export function loginUser () {
   return auth.login()
 }
 
-function chainError (err) {
-  return Promise.reject(err)
-}
-
 export function fetchAndHandleAuthedUser () {
   return async function (dispatch) {
     try {
       dispatch(fetchingUser())
-      const response = await auth.handleAuthentication()
-      dispatch(authUser(response))
-      return await getAuthUserProfile(response.accessToken)
+      const {accessToken, idToken, expiresAt} = await auth.handleAuthentication()
+      const {sub: uid} = decodeJwt(accessToken)
+      const {friends, ...user} = await getAuthUserProfile(accessToken)
+      dispatch(fetchingUserSuccess(uid, user, Date.now()))
+      dispatch(fetchingFriendsSuccess(friendsObjectFromArray(friends), friends.length))
+      return dispatch(authUser({uid, accessToken, idToken, expiresAt}))
     } catch (error) {
       return dispatch(authUserError(error))
     }
@@ -104,6 +106,7 @@ const initialState = Map({
   isAuthed: false,
   isFetching: true,
   error: '',
+  uid: '',
   accessToken: '',
   idToken: '',
   expiresAt: '',
@@ -114,6 +117,7 @@ export default function users (state = initialState, action) {
     case AUTH_USER :
       return state.merge({
         isAuthed: true,
+        uid: action.uid,
         accessToken: action.accessToken,
         idToken: action.idToken,
         expiresAt: action.expiresAt,
