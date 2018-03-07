@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { LoginContainer, CallbackContainer, HomeContainer } from 'containers'
+import { LoginContainer, CallbackContainer, HomeContainer, NavigationContainer } from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
 import { ContentContainer } from './Styles'
@@ -25,7 +25,6 @@ const PrivateRoute = ({component: Component, isAuthed, isFetching, ...rest}) => 
 PrivateRoute.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isAuthed: PropTypes.bool.isRequired,
-  pathName: PropTypes.string.isRequired,
   location: PropTypes.object,
   component: PropTypes.func.isRequired,
 }
@@ -35,7 +34,6 @@ class App extends Component {
     history: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
     isAuthed: PropTypes.bool.isRequired,
-    pathName: PropTypes.string.isRequired,
     invalidAuth: PropTypes.func.isRequired,
     changeRoute: PropTypes.func.isRequired,
     handleAuthedUserFromBrowserCache: PropTypes.func.isRequired,
@@ -56,26 +54,29 @@ class App extends Component {
 
     return (
       <ConnectedRouter history={history}>
-        <ContentContainer>
-          <Switch>
-            <PrivateRoute
-              exact={true}
-              path='/'
-              isAuthed={isAuthed}
-              isFetching={isFetching}
-              component={LoginContainer}/>
-            <PrivateRoute
-              path='/home'
-              isAuthed={isAuthed}
-              isFetching={isFetching}
-              component={HomeContainer}/>
-            <Route
-              path='/callback'
-              isAuthed={isAuthed}
-              isFetching={isFetching}
-              component={CallbackContainer}/>
-          </Switch>
-        </ContentContainer>
+        <div>
+          {isAuthed && <NavigationContainer />}
+          <ContentContainer>
+            <Switch>
+              <PrivateRoute
+                exact={true}
+                path='/'
+                isAuthed={isAuthed}
+                isFetching={isFetching}
+                component={LoginContainer}/>
+              <PrivateRoute
+                path='/home'
+                isAuthed={isAuthed}
+                isFetching={isFetching}
+                component={HomeContainer}/>
+              <Route
+                path='/callback'
+                isAuthed={isAuthed}
+                isFetching={isFetching}
+                component={CallbackContainer}/>
+            </Switch>
+          </ContentContainer>
+        </div>
       </ConnectedRouter>
     )
   }
