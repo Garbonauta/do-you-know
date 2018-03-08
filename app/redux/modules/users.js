@@ -143,7 +143,7 @@ export function user (state = initialUserState, action) {
 
 const initialState = Map({
   isAuthed: false,
-  isFetching: true,
+  isFetching: false,
   error: '',
   uid: '',
   accessToken: '',

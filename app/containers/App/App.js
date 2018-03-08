@@ -4,8 +4,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { NavDrawer } from 'components'
-import { LoginContainer, CallbackContainer, HomeContainer, NavigationContainer } from 'containers'
+import { LoginContainer, CallbackContainer, HomeContainer, NavigationContainer, NavDrawerContainer } from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
 import { ContentContainer } from './Styles'
@@ -33,7 +32,7 @@ PrivateRoute.propTypes = {
 class App extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    userFetching: PropTypes.bool.isRequired,
     isAuthed: PropTypes.bool.isRequired,
     invalidAuth: PropTypes.func.isRequired,
     changeRoute: PropTypes.func.isRequired,
@@ -44,7 +43,7 @@ class App extends Component {
   }
   async componentDidMount () {
     const pathname = window.location.pathname
-    if (pathname && (pathname !== '/callback')) {
+    if (pathname && (pathname !== '/callback') && localStorage.getItem('access_token')) {
       try {
         await this.props.handleAuthedUserFromBrowserCache()
       } catch (error) {
@@ -55,30 +54,30 @@ class App extends Component {
   handleDrawerToggle = () => this.setState({drawerOpen: !this.state.drawerOpen})
 
   render () {
-    const {history, isAuthed, isFetching} = this.props
+    const {history, isAuthed, userFetching} = this.props
 
     return (
       <ConnectedRouter history={history}>
         <div>
           {isAuthed && <NavigationContainer drawerToggle={this.handleDrawerToggle} />}
-          {isAuthed && <NavDrawer open={this.state.drawerOpen} />}
+          {isAuthed && <NavDrawerContainer open={this.state.drawerOpen} />}
           <ContentContainer>
             <Switch>
               <PrivateRoute
                 exact={true}
                 path='/'
                 isAuthed={isAuthed}
-                isFetching={isFetching}
+                isFetching={userFetching}
                 component={LoginContainer}/>
               <PrivateRoute
                 path='/home'
                 isAuthed={isAuthed}
-                isFetching={isFetching}
+                isFetching={userFetching}
                 component={HomeContainer}/>
               <Route
                 path='/callback'
                 isAuthed={isAuthed}
-                isFetching={isFetching}
+                isFetching={userFetching}
                 component={CallbackContainer}/>
             </Switch>
           </ContentContainer>
@@ -92,7 +91,7 @@ function mapStateToProps ({users, friends}, props) {
   return {
     history: props.history,
     isAuthed: users.get('isAuthed'),
-    isFetching: users.get('isFetching'),
+    userFetching: users.get('isFetching'),
   }
 }
 
