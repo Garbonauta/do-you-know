@@ -4,6 +4,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { NavDrawer } from 'components'
 import { LoginContainer, CallbackContainer, HomeContainer, NavigationContainer } from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
@@ -38,6 +39,9 @@ class App extends Component {
     changeRoute: PropTypes.func.isRequired,
     handleAuthedUserFromBrowserCache: PropTypes.func.isRequired,
   }
+  state = {
+    drawerOpen: true,
+  }
   async componentDidMount () {
     const pathname = window.location.pathname
     if (pathname && (pathname !== '/callback')) {
@@ -48,6 +52,7 @@ class App extends Component {
       }
     }
   }
+  handleDrawerToggle = () => this.setState({drawerOpen: !this.state.drawerOpen})
 
   render () {
     const {history, isAuthed, isFetching} = this.props
@@ -55,7 +60,8 @@ class App extends Component {
     return (
       <ConnectedRouter history={history}>
         <div>
-          {isAuthed && <NavigationContainer />}
+          {isAuthed && <NavigationContainer drawerToggle={this.handleDrawerToggle} />}
+          {isAuthed && <NavDrawer open={this.state.drawerOpen} />}
           <ContentContainer>
             <Switch>
               <PrivateRoute

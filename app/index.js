@@ -8,6 +8,7 @@ import { routerReducer, routerMiddleware } from 'react-router-redux'
 import { addLocaleData } from 'react-intl'
 import es from 'react-intl/locale-data/es'
 import thunk from 'redux-thunk'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import * as reducers from 'redux/modules'
 import { App } from 'containers'
 import messages from 'data/messages/es'
@@ -39,7 +40,9 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App history={history} />
+    <MuiThemeProvider>
+      <App history={history} />
+    </MuiThemeProvider>
   </Provider>,
   document.getElementById('app')
 )

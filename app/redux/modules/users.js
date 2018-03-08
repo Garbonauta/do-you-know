@@ -97,11 +97,19 @@ export function handleAuthedUserFromBrowserCache () {
         return await authAction(dispatch, auth.getAuthenticated())
       } catch (error) {
         dispatch(authUserError(error))
+        return Promise.reject(error)
       }
     }
     const error = 'User is not authenticated'
     dispatch(authUserError(error))
     return Promise.reject(error)
+  }
+}
+
+export function logOut () {
+  return function (dispatch) {
+    auth.logout()
+    return dispatch(unAuthUser())
   }
 }
 

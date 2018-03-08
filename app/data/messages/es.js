@@ -1,4 +1,5 @@
 const messages = {
+  'appName': '¿Alguien Sabe?',
   'language': 'Español',
   'loading': 'Cargando',
 }
