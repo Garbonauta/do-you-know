@@ -13,3 +13,17 @@ export function getAuthUserProfile (accessToken) {
         .then(data => response.ok ? data : Promise.reject(data))
     })
 }
+
+export function getUserGroups (accessToken, uid) {
+  return fetch(`${server}/user/${uid}/groups`, {
+    method: 'get',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/json',
+    },
+  })
+    .then(response => {
+      return response.json()
+        .then(data => response.ok ? data : Promise.reject(data))
+    })
+}

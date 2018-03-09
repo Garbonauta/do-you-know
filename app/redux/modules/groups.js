@@ -1,4 +1,6 @@
 import { Map, fromJS } from 'immutable'
+import { getUserGroups } from 'helpers/api'
+import { groupsObjectFromArray } from 'helpers/utils'
 
 const FETCHING_GROUPS = 'FETCHING_GROUPS'
 const FETCHING_GROUPS_ERROR = 'FETCHING_GROUPS_ERROR'
@@ -18,11 +20,25 @@ function fetchingGroupsError (error) {
   }
 }
 
-function fetchingGroupsSuccess (groups) {
+function fetchingGroupsSuccess ({favorite, groups}) {
   return {
     type: FETCHING_GROUPS_SUCCESS,
     timestamp: Date.now(),
+    favorite,
     groups,
+  }
+}
+
+export function fetchAndHandleGroups (accessToken, uid) {
+  return async function (dispatch) {
+    try {
+      dispatch(fetchingGroups())
+      const groupsTable = await getUserGroups(accessToken, uid)
+      return dispatch(fetchingGroupsSuccess(groupsObjectFromArray(groupsTable)))
+    } catch (error) {
+      dispatch(fetchingGroupsError(error))
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -47,6 +63,7 @@ export default function groups (state = initialState, action) {
       return state.merge({
         isFetching: false,
         lastUpdated: action.timestamp,
+        favorite: action.favorite,
         groups: fromJS({
           ...action.groups,
         }),

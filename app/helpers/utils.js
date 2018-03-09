@@ -18,3 +18,13 @@ export function friendsObjectFromArray (friendsArray) {
     return accum
   }, {})
 }
+
+export function groupsObjectFromArray (groupsArray) {
+  return groupsArray.reduce((accum, currVal) => {
+    if (currVal.favorite) {
+      accum.favorite = currVal.id
+    }
+    accum.groups[currVal.id] = currVal
+    return accum
+  }, {groups: {}})
+}
