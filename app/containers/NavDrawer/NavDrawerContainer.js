@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as groupsActionCreators from 'redux/modules/groups'
 import { NavDrawer } from 'components'
 
 class NavDrawerContainer extends Component {
@@ -14,7 +12,6 @@ class NavDrawerContainer extends Component {
     groups: PropTypes.object,
     favoriteGroup: PropTypes.string,
     messages: PropTypes.object.isRequired,
-    fetchAndHandleGroups: PropTypes.func.isRequired,
   }
   render () {
     const { open, groups, favoriteGroup, isFetching, messages } = this.props
@@ -44,11 +41,4 @@ function mapStateToProps ({users, intl}) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators(
-    {
-      ...groupsActionCreators,
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavDrawerContainer)
+export default connect(mapStateToProps)(NavDrawerContainer)

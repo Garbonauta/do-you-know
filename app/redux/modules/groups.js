@@ -1,5 +1,4 @@
 import { Map, fromJS } from 'immutable'
-import { getUserGroups } from 'helpers/api'
 import { groupsObjectFromArray } from 'helpers/utils'
 
 const FETCHING_GROUPS = 'FETCHING_GROUPS'
@@ -26,19 +25,6 @@ function fetchingGroupsSuccess ({favorite, groups}) {
     timestamp: Date.now(),
     favorite,
     groups,
-  }
-}
-
-export function fetchAndHandleGroups (accessToken, uid) {
-  return async function (dispatch) {
-    try {
-      dispatch(fetchingGroups())
-      const groupsTable = await getUserGroups(accessToken, uid)
-      return dispatch(fetchingGroupsSuccess(groupsObjectFromArray(groupsTable)))
-    } catch (error) {
-      dispatch(fetchingGroupsError(error))
-      return Promise.reject(error)
-    }
   }
 }
 
