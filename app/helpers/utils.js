@@ -13,18 +13,27 @@ export function decodeJwt (token) {
 }
 
 export function friendsObjectFromArray (friendsArray) {
-  return friendsArray.reduce((accum, currVal) => {
-    accum[currVal.name] = currVal
+  return friendsArray.reduce((accum, {_id: id, info: {fullName, link, pictures}}) => {
+    accum[fullName] = {
+      id,
+      fullName,
+      link,
+      pictures,
+    }
     return accum
   }, {})
 }
 
 export function groupsObjectFromArray (groupsArray) {
-  return groupsArray.reduce((accum, currVal) => {
-    if (currVal.favorite) {
-      accum.favorite = currVal.id
+  return groupsArray.reduce((accum, {groupId: {_id, name, pictureUrl}, favorite}) => {
+    if (favorite) {
+      accum.favoriteGroup = _id
     }
-    accum.groups[currVal.id] = currVal
+    accum.groups[_id] = {
+      id: _id,
+      name,
+      pictureUrl,
+    }
     return accum
   }, {groups: {}})
 }

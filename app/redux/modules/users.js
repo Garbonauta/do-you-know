@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable'
-import { decodeJwt, friendsObjectFromArray } from 'helpers/utils'
+import { decodeJwt, friendsObjectFromArray, groupsObjectFromArray } from 'helpers/utils'
 import { fetchingFriendsSuccess } from './friends'
 import { getAuthUserProfile } from 'helpers/api'
 import Auth from 'helpers/Auth'
@@ -43,11 +43,12 @@ function fetchingUser () {
   }
 }
 
-export function fetchingUserSuccess (uid, user, timestamp) {
+export function fetchingUserSuccess (uid, info, timestamp, groups) {
   return {
     type: FETCHING_USER_SUCCESS,
     uid,
-    user,
+    user: info,
+    groups,
     timestamp,
   }
 }
@@ -66,8 +67,8 @@ export function loginUser () {
 
 async function authAction (dispatch, {uid, accessToken, idToken, expiresAt}) {
   try {
-    const {friends, ...user} = await getAuthUserProfile(accessToken)
-    dispatch(fetchingUserSuccess(uid, user, Date.now()))
+    const {friends, info, meta: {groups}} = await getAuthUserProfile(accessToken)
+    dispatch(fetchingUserSuccess(uid, info, Date.now(), groupsObjectFromArray(groups)))
     dispatch(fetchingFriendsSuccess(friendsObjectFromArray(friends), friends.length))
     return dispatch(authUser({uid, accessToken, idToken, expiresAt}))
   } catch (error) {
@@ -135,6 +136,7 @@ export function user (state = initialUserState, action) {
       return state.merge({
         lastUpdated: action.timestamp,
         info: action.user,
+        ...action.groups,
       })
     default:
       return state

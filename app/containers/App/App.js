@@ -62,8 +62,8 @@ class App extends Component {
         <AllContent>
           {isAuthed && <NavigationContainer drawerToggle={this.handleDrawerToggle} />}
           <FlexContent>
-            {isAuthed && <NavDrawerContainer open={this.state.drawerOpen} />}
-            <ContentContainer open={this.state.drawerOpen}>
+            {isAuthed && !userFetching && <NavDrawerContainer open={this.state.drawerOpen} />}
+            <ContentContainer open={this.state.drawerOpen && isAuthed}>
               <Switch>
                 <PrivateRoute
                   exact={true}

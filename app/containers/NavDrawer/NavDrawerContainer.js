@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as groupsActionCreators from 'redux/modules/groups'
 import { NavDrawer } from 'components'
-import messages from '../../data/messages/es'
 
 class NavDrawerContainer extends Component {
   static propTypes = {
@@ -34,13 +33,14 @@ class NavDrawerContainer extends Component {
   }
 }
 
-function mapStateToProps ({groups, users, intl}) {
+function mapStateToProps ({users, intl}) {
+  const uid = users.get('uid')
   return {
-    isFetching: groups.get('isFetching'),
-    uid: users.get('uid'),
+    isFetching: users.get('isFetching'),
+    uid,
     accessToken: users.get('accessToken'),
-    groups: groups.get('groups').toJS(),
-    favoriteGroup: groups.get('favorite'),
+    groups: users.get(uid).get('groups').toJS(),
+    favoriteGroup: users.get(uid).get('favoriteGroup'),
     messages: {
       loading: intl.messages.loading,
       group: intl.messages.group,

@@ -56,7 +56,7 @@ function mapStateToProps ({users, intl: {messages}}) {
   const uid = users.get('uid')
 
   return {
-    pictureUrl: uid ? users.get(uid).get('info').get('details').get('picture') : '',
+    pictureUrl: uid ? users.get(uid).get('info').get('pictures').get('small') : '',
     messages: {
       appName: messages.appName,
     },
