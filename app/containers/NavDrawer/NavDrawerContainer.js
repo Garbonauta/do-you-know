@@ -12,13 +12,9 @@ class NavDrawerContainer extends Component {
     uid: PropTypes.string.isRequired,
     accessToken: PropTypes.string.isRequired,
     groups: PropTypes.object,
-    favoriteGroup: PropTypes.number,
+    favoriteGroup: PropTypes.string,
     messages: PropTypes.object.isRequired,
     fetchAndHandleGroups: PropTypes.func.isRequired,
-  }
-  componentDidMount = async () => {
-    const { accessToken, uid, fetchAndHandleGroups } = this.props
-    await fetchAndHandleGroups(accessToken, uid, fetchAndHandleGroups)
   }
   render () {
     const { open, groups, favoriteGroup, isFetching, messages } = this.props

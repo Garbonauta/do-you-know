@@ -31,7 +31,7 @@ export default function NavDrawer ({open, groups, favoriteGroup, isFetching, mes
 NavDrawer.propTypes = {
   open: PropTypes.bool.isRequired,
   groups: PropTypes.object,
-  favoriteGroup: PropTypes.number,
+  favoriteGroup: PropTypes.string,
   isFetching: PropTypes.bool.isRequired,
   messages: PropTypes.shape({
     group: PropTypes.string.isRequired,
