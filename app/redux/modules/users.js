@@ -5,6 +5,7 @@ import { handleAndFetchGroups } from './groups'
 import { getAuthUserProfile } from 'helpers/api'
 import Auth from 'helpers/Auth'
 
+console.log('env', process.env)
 const auth = new Auth()
 
 const AUTH_USER = 'AUTH_USER'

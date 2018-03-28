@@ -70,7 +70,7 @@ const developmentConfig = {
 
 const productionConfig = {
   devtool: 'cheap-module-source-map',
-  plugins: [HTMLWebpackPluginConfig, productionPlugin, new Dotenv()],
+  plugins: [HTMLWebpackPluginConfig, productionPlugin],
 }
 
 export default Object.assign({}, base, isProduction === true ? productionConfig : developmentConfig)
