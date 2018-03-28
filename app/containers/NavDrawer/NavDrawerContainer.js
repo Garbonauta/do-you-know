@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {NavDrawer} from 'components'
-import {Map} from 'immutable'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Map } from 'immutable'
+import { NavDrawer } from 'components'
+import * as routeActionCreators from 'redux/modules/route'
 
 class NavDrawerContainer extends Component {
   static propTypes = {
@@ -13,6 +15,11 @@ class NavDrawerContainer extends Component {
     groups: PropTypes.object,
     favoriteGroup: PropTypes.string,
     messages: PropTypes.object.isRequired,
+    changeRoute: PropTypes.func.isRequired,
+  }
+  handleGroupClick = (e, id) => {
+    e.preventDefault()
+    this.props.changeRoute(`/group/${id}`)
   }
 
   render () {
@@ -23,6 +30,7 @@ class NavDrawerContainer extends Component {
         isFetching={isFetching}
         groups={groups}
         favoriteGroup={favoriteGroup}
+        groupAction={this.handleGroupClick}
         messages={messages}/>
     )
   }
@@ -45,4 +53,11 @@ function mapStateToProps ({users, intl, groups}) {
   }
 }
 
-export default connect(mapStateToProps)(NavDrawerContainer)
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators(
+    {
+      ...routeActionCreators,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavDrawerContainer)

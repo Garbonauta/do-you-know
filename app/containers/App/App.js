@@ -4,7 +4,8 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { LoginContainer, CallbackContainer, HomeContainer, NavigationContainer, NavDrawerContainer } from 'containers'
+import { LoginContainer, CallbackContainer, GroupContainer, HomeContainer,
+  NavigationContainer, NavDrawerContainer } from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
 import { AllContent, ContentContainer, FlexContent } from './Styles'
@@ -76,6 +77,11 @@ class App extends Component {
                   isAuthed={isAuthed}
                   isFetching={userFetching}
                   component={HomeContainer}/>
+                <PrivateRoute
+                  path='/group/:groupId'
+                  isFetching={userFetching}
+                  isAuthed={isAuthed}
+                  component={GroupContainer}/>
                 <Route
                   path='/callback'
                   isAuthed={isAuthed}

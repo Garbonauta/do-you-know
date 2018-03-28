@@ -3,5 +3,7 @@ const messages = {
   'language': 'Español',
   'loading': 'Cargando',
   'group': 'Grupos',
+  'moderators': 'Moderadores',
+  'createdBy': 'Creador del Grupo',
 }
 export default messages

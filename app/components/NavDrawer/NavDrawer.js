@@ -12,7 +12,7 @@ const drawerStyle = {
   boxShadow: 'rgba(0, 0, 0, 0.16) 1px 3px 8px, rgba(0, 0, 0, 0.23) 1px 3px 8px',
 }
 
-export default function NavDrawer ({open, groups, favoriteGroup, isFetching, messages}) {
+export default function NavDrawer ({open, groups, favoriteGroup, isFetching, messages, groupAction}) {
   const sortedIds = Object.keys(groups)
   return (
     <Drawer containerStyle={drawerStyle} open={open}>
@@ -21,7 +21,7 @@ export default function NavDrawer ({open, groups, favoriteGroup, isFetching, mes
         !isFetching &&
           sortedIds.map(id => {
             return (
-              <MenuItem key={id}>{groups[id].name}</MenuItem>
+              <MenuItem key={id} onClick={(e) => groupAction(e, id)}>{groups[id].name}</MenuItem>
             )
           })
       }
@@ -32,6 +32,7 @@ NavDrawer.propTypes = {
   open: PropTypes.bool.isRequired,
   groups: PropTypes.object,
   favoriteGroup: PropTypes.string,
+  groupAction: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   messages: PropTypes.shape({
     group: PropTypes.string.isRequired,

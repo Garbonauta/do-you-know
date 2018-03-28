@@ -18,6 +18,10 @@ class NavigationContainer extends Component {
     actionOpen: false,
     anchorE1: null,
   }
+  handleHome = (e) => {
+    e.preventDefault()
+    this.props.changeRoute('/home')
+  }
   handleAvatarClick = (e) => {
     e.preventDefault()
     this.setState({
@@ -47,6 +51,7 @@ class NavigationContainer extends Component {
         avatarAnchor={this.state.anchorE1}
         avatarClick={this.handleAvatarClick}
         avatarRequestClose={this.handleAvatarRequestClose}
+        handleHome={this.handleHome}
         logout={this.logOutAndRedirect}/>
     )
   }

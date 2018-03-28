@@ -6,7 +6,6 @@ import MenuItem from 'material-ui/MenuItem'
 import Avatar from 'material-ui/Avatar'
 import Popover from 'material-ui/Popover'
 
-
 function AvatarMenu (
   {
     pictureUrl, open, anchor, onClick, handleRequestClose,
@@ -37,16 +36,22 @@ AvatarMenu.propTypes = {
   logout: PropTypes.func.isRequired,
 }
 
+const titleStyle = {
+  cursor: 'pointer',
+}
+
 export default function Navigation (
   {
     messages, pictureUrl, iconAction,
     avatarOpen, avatarAnchor, avatarClick, avatarRequestClose,
-    logout,
+    handleHome, logout,
   }) {
   return (
     <div>
       <AppBar
         title={messages.appName}
+        titleStyle={titleStyle}
+        onTitleClick={handleHome}
         onLeftIconButtonClick={iconAction}
         iconElementRight={<AvatarMenu
           pictureUrl={pictureUrl}
@@ -68,5 +73,6 @@ Navigation.propTypes = {
   avatarClick: PropTypes.func.isRequired,
   avatarRequestClose: PropTypes.func.isRequired,
   iconAction: PropTypes.func.isRequired,
+  handleHome: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
 }
