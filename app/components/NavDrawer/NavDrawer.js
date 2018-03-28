@@ -5,11 +5,9 @@ import MenuItem from 'material-ui/MenuItem'
 import Subheader from 'material-ui/Subheader'
 
 const drawerStyle = {
-  background: 'white',
   top: 'unset !important',
   left: 'unset !important',
   willChange: 'top, left',
-  boxShadow: 'rgba(0, 0, 0, 0.16) 1px 3px 8px, rgba(0, 0, 0, 0.23) 1px 3px 8px',
 }
 
 export default function NavDrawer ({open, groups, favoriteGroup, isFetching, messages, groupAction}) {

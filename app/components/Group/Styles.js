@@ -18,6 +18,7 @@ export const SideBar = FlexDivShared.extend`
   padding: 10px;
   max-width: 220px;
   flex-direction: column;
+  font-size: 0.9em;
 `
 export const SideBarEntry = styled.div`
   margin-bottom: 24px;
