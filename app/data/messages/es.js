@@ -2,6 +2,6 @@ const messages = {
   'appName': '¿Alguien Sabe?',
   'language': 'Español',
   'loading': 'Cargando',
-  'group': 'Grupo',
+  'group': 'Grupos',
 }
 export default messages

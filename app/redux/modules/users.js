@@ -1,6 +1,7 @@
 import { Map, fromJS } from 'immutable'
 import { decodeJwt, friendsObjectFromArray, groupsObjectFromArray } from 'helpers/utils'
 import { fetchingFriendsSuccess } from './friends'
+import { handleAndFetchGroups } from './groups'
 import { getAuthUserProfile } from 'helpers/api'
 import Auth from 'helpers/Auth'
 
@@ -43,11 +44,12 @@ function fetchingUser () {
   }
 }
 
-export function fetchingUserSuccess (uid, info, timestamp, groups) {
+export function fetchingUserSuccess (uid, info, timestamp, favoriteGroup, groups) {
   return {
     type: FETCHING_USER_SUCCESS,
     uid,
     user: info,
+    favoriteGroup,
     groups,
     timestamp,
   }
@@ -67,11 +69,13 @@ export function loginUser () {
 
 async function authAction (dispatch, {uid, accessToken, idToken, expiresAt}) {
   try {
-    const {friends, info, meta: {groups}} = await getAuthUserProfile(accessToken)
-    dispatch(fetchingUserSuccess(uid, info, Date.now(), groupsObjectFromArray(groups)))
+    const {friends, info, meta: {favoriteGroup, groups}} = await getAuthUserProfile(accessToken)
+    dispatch(fetchingUserSuccess(uid, info, Date.now(), favoriteGroup, groups))
     dispatch(fetchingFriendsSuccess(friendsObjectFromArray(friends), friends.length))
-    return dispatch(authUser({uid, accessToken, idToken, expiresAt}))
+    dispatch(authUser({uid, accessToken, idToken, expiresAt}))
+    return dispatch(handleAndFetchGroups(accessToken, groups))
   } catch (error) {
+    dispatch(authUserError(error))
     throw error
   }
 }
@@ -98,7 +102,7 @@ export function handleAuthedUserFromBrowserCache () {
         return await authAction(dispatch, auth.getAuthenticated())
       } catch (error) {
         dispatch(authUserError(error))
-        return Promise.reject(error)
+        throw error
       }
     }
     const error = 'User is not authenticated'
@@ -136,7 +140,8 @@ export function user (state = initialUserState, action) {
       return state.merge({
         lastUpdated: action.timestamp,
         info: action.user,
-        ...action.groups,
+        favoriteGroup: action.favoriteGroup,
+        userGroups: action.groups,
       })
     default:
       return state

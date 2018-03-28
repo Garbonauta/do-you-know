@@ -25,15 +25,12 @@ export function friendsObjectFromArray (friendsArray) {
 }
 
 export function groupsObjectFromArray (groupsArray) {
-  return groupsArray.reduce((accum, {groupId: {_id, name, pictureUrl}, favorite}) => {
-    if (favorite) {
-      accum.favoriteGroup = _id
-    }
-    accum.groups[_id] = {
+  return groupsArray.reduce((accum, {_id, name, pictureUrl}) => {
+    accum[_id] = {
       id: _id,
       name,
       pictureUrl,
     }
     return accum
-  }, {groups: {}})
+  }, {})
 }
