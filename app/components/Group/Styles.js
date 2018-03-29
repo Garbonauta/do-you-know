@@ -18,12 +18,17 @@ export const SideBar = FlexDivShared.extend`
   padding: 10px;
   max-width: 220px;
   flex-direction: column;
-  font-size: 0.9em;
-`
-export const SideBarEntry = styled.div`
-  margin-bottom: 24px;
 `
 
-export const Link = LinkShared.extend`
-  margin-bottom: 5px;
-`
+export const styles = theme => ({
+  list: {
+    paddingBottom: '24px',
+  },
+  listItem: {
+    padding: '5px 0',
+  },
+  listItemText: {
+    color: 'rgba(0, 0, 0, 0.64)',
+    fontSize: '0.8em',
+  },
+})

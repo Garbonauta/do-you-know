@@ -1,29 +1,34 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FlexDiv, GroupContent, Header, SideBar, SideBarEntry, Link } from './Styles'
-import Subheader from 'material-ui/Subheader'
+import { withStyles } from 'material-ui/styles'
+import List, { ListItem, ListItemText } from 'material-ui/List'
+import Typography from 'material-ui/Typography'
+import { FlexDiv, GroupContent, Header, SideBar, styles } from './Styles'
 
-const sideBarSubheaderStyle = {
-  fontSize: '1em',
-  padding: '0',
-  marginBottom: '5px',
-  lineHeight: 'unset',
-}
-function GroupSideBar ({owner, createdByMsg, moderators, moderatorMsg}) {
+function GroupSideBar ({owner, createdByMsg, moderators, moderatorMsg, classes: {list, listItem, listItemText}}) {
   return (
     <SideBar>
-      <SideBarEntry>
-        <Subheader style={sideBarSubheaderStyle}>{createdByMsg}</Subheader>
-        <Link href={owner.info.link} key={owner._id}>{owner.info.fullName}</Link>
-      </SideBarEntry>
-      <SideBarEntry>
-        <Subheader style={sideBarSubheaderStyle}>{moderatorMsg}</Subheader>
+      <List className={list} subheader={<Typography variant='caption'>{createdByMsg}</Typography>}>
+        <ListItem
+          className={listItem}
+          component='a'
+          href={owner.info.link}>
+          <ListItemText classes={{primary: listItemText}} primary={owner.info.fullName}/>
+        </ListItem>
+      </List>
+      <List clasName={list} subheader={<Typography variant='caption'>{moderatorMsg}</Typography>}>
         {moderators.map(({_id: id, info: {fullName, link}}) => {
           return (
-            <Link href={link} key={id}>{fullName}</Link>
+            <ListItem
+              key={id}
+              className={listItem}
+              component='a'
+              href={link}>
+              <ListItemText classes={{primary: listItemText}} primary={fullName}/>
+            </ListItem>
           )
         })}
-      </SideBarEntry>
+      </List>
     </SideBar>
   )
 }
@@ -45,9 +50,10 @@ GroupSideBar.propTypes = {
     }),
   })),
   moderatorMsg: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
 }
 
-export default function Group (
+function Group (
   {
     group:
       {
@@ -61,6 +67,7 @@ export default function Group (
         createdBy,
         moderators: moderatorMsg,
       },
+    classes
   }) {
   return (
     <FlexDiv>
@@ -71,7 +78,8 @@ export default function Group (
         owner={owner}
         createdByMsg={createdBy}
         moderators={moderators}
-        moderatorMsg={moderatorMsg}/>
+        moderatorMsg={moderatorMsg}
+        classes={classes}/>
     </FlexDiv>
   )
 }
@@ -87,5 +95,8 @@ Group.propTypes = {
     pictureUrl: PropTypes.string,
     owner: PropTypes.object.isRequired,
     moderators: PropTypes.array.isRequired,
+    classes: PropTypes.object.isRequired,
   }),
 }
+
+export default withStyles(styles)(Group)

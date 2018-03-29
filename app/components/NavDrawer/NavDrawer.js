@@ -1,28 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withStyles } from 'material-ui/styles'
 import Drawer from 'material-ui/Drawer'
-import MenuItem from 'material-ui/MenuItem'
-import Subheader from 'material-ui/Subheader'
+import { MenuList, MenuItem } from 'material-ui/Menu'
+import { ListItemText, ListSubheader } from 'material-ui/List'
+import { styles } from './Styles'
 
-const drawerStyle = {
-  top: 'unset !important',
-  left: 'unset !important',
-  willChange: 'top, left',
-}
-
-export default function NavDrawer ({open, groups, favoriteGroup, isFetching, messages, groupAction}) {
+function NavDrawer (
+  {
+    open, groups, favoriteGroup, isFetching, messages, groupAction,
+    pathName, classes: {toolbar, paper, anchorLeft},
+  }) {
   const sortedIds = Object.keys(groups)
   return (
-    <Drawer containerStyle={drawerStyle} open={open}>
-      <Subheader>{messages.group}</Subheader>
-      {
-        !isFetching &&
+    <Drawer variant='persistent' open={open} classes={{paper: paper, paperAnchorDockedLeft: anchorLeft}}>
+      <div className={toolbar}/>
+      <MenuList subheader={<ListSubheader>{messages.group}</ListSubheader>}>
+        {
+          !isFetching &&
           sortedIds.map(id => {
+            const url = `/group/${id}`
             return (
-              <MenuItem key={id} onClick={(e) => groupAction(e, id)}>{groups[id].name}</MenuItem>
+              <MenuItem key={id} selected={pathName === url} onClick={e => groupAction(e, id)}>
+                <ListItemText inset={true} primary={groups[id].name}/>
+              </MenuItem>
             )
           })
-      }
+        }
+      </MenuList>
     </Drawer>
   )
 }
@@ -35,4 +40,8 @@ NavDrawer.propTypes = {
   messages: PropTypes.shape({
     group: PropTypes.string.isRequired,
   }).isRequired,
+  classes: PropTypes.object.isRequired,
+  pathName: PropTypes.string.isRequired,
 }
+
+export default withStyles(styles)(NavDrawer)

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -16,6 +16,7 @@ class NavDrawerContainer extends Component {
     favoriteGroup: PropTypes.string,
     messages: PropTypes.object.isRequired,
     changeRoute: PropTypes.func.isRequired,
+    pathName: PropTypes.string.isRequired,
   }
   handleGroupClick = (e, id) => {
     e.preventDefault()
@@ -23,7 +24,7 @@ class NavDrawerContainer extends Component {
   }
 
   render () {
-    const {open, groups, favoriteGroup, isFetching, messages} = this.props
+    const {open, groups, favoriteGroup, isFetching, messages, pathName} = this.props
     return (
       <NavDrawer
         open={open}
@@ -31,12 +32,13 @@ class NavDrawerContainer extends Component {
         groups={groups}
         favoriteGroup={favoriteGroup}
         groupAction={this.handleGroupClick}
-        messages={messages}/>
+        messages={messages}
+        pathName={pathName}/>
     )
   }
 }
 
-function mapStateToProps ({users, intl, groups}) {
+function mapStateToProps ({users, intl, groups, routing}) {
   const uid = users.get('uid')
   return {
     isFetching: groups.get('isFetching'),
@@ -50,6 +52,7 @@ function mapStateToProps ({users, intl, groups}) {
       loading: intl.messages.loading,
       group: intl.messages.group,
     },
+    pathName: routing.location.pathname,
   }
 }
 

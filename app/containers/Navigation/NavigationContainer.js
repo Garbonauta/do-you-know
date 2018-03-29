@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Navigation } from 'components'
+import { NavBar } from 'components'
+import { NavDrawerContainer } from 'containers'
 import * as userActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
 
@@ -10,6 +11,7 @@ class NavigationContainer extends Component {
   static propTypes = {
     messages: PropTypes.object.isRequired,
     pictureUrl: PropTypes.string.isRequired,
+    drawerOpen: PropTypes.bool.isRequired,
     drawerToggle: PropTypes.func.isRequired,
     logOut: PropTypes.func.isRequired,
     changeRoute: PropTypes.func.isRequired,
@@ -39,20 +41,24 @@ class NavigationContainer extends Component {
     await this.props.logOut()
     this.props.changeRoute('/')
   }
+
   render () {
-    const { messages, pictureUrl, drawerToggle } = this.props
+    const {messages, pictureUrl, drawerOpen, drawerToggle} = this.props
 
     return (
-      <Navigation
-        messages={messages}
-        pictureUrl={pictureUrl}
-        iconAction={drawerToggle}
-        avatarOpen={this.state.actionOpen}
-        avatarAnchor={this.state.anchorE1}
-        avatarClick={this.handleAvatarClick}
-        avatarRequestClose={this.handleAvatarRequestClose}
-        handleHome={this.handleHome}
-        logout={this.logOutAndRedirect}/>
+      <div>
+        <NavBar
+          messages={messages}
+          pictureUrl={pictureUrl}
+          iconAction={drawerToggle}
+          avatarOpen={this.state.actionOpen}
+          avatarAnchor={this.state.anchorE1}
+          avatarClick={this.handleAvatarClick}
+          avatarRequestClose={this.handleAvatarRequestClose}
+          handleHome={this.handleHome}
+          logout={this.logOutAndRedirect}/>
+        <NavDrawerContainer open={drawerOpen}/>
+      </div>
     )
   }
 }

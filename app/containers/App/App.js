@@ -5,10 +5,11 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { LoginContainer, CallbackContainer, GroupContainer, HomeContainer,
-  NavigationContainer, NavDrawerContainer } from 'containers'
+  NavigationContainer } from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
-import { AllContent, ContentContainer, FlexContent } from './Styles'
+import { withStyles } from 'material-ui/styles'
+import { AllContent, ContentContainer, styles } from './Styles'
 import { Global } from 'sharedStyles'
 
 const PrivateRoute = ({component: Component, isAuthed, isFetching, ...rest}) => (
@@ -39,6 +40,7 @@ class App extends Component {
     invalidAuth: PropTypes.func.isRequired,
     changeRoute: PropTypes.func.isRequired,
     handleAuthedUserFromBrowserCache: PropTypes.func.isRequired,
+    classes: PropTypes.object.isRequired,
   }
   state = {
     drawerOpen: true,
@@ -56,15 +58,15 @@ class App extends Component {
   handleDrawerToggle = () => this.setState({drawerOpen: !this.state.drawerOpen})
 
   render () {
-    const {history, isAuthed, userFetching} = this.props
+    const {history, isAuthed, userFetching, classes: {content, toolbar}} = this.props
 
     return (
       <ConnectedRouter history={history}>
         <AllContent>
-          {isAuthed && <NavigationContainer drawerToggle={this.handleDrawerToggle} />}
-          <FlexContent>
-            {isAuthed && !userFetching && <NavDrawerContainer open={this.state.drawerOpen} />}
-            <ContentContainer open={this.state.drawerOpen && isAuthed}>
+          {isAuthed && <NavigationContainer drawerToggle={this.handleDrawerToggle} drawerOpen={this.state.drawerOpen} />}
+          <div>
+            <div className={toolbar}/>
+            <ContentContainer open={this.state.drawerOpen && isAuthed} className={content}>
               <Switch>
                 <PrivateRoute
                   exact={true}
@@ -89,7 +91,7 @@ class App extends Component {
                   component={CallbackContainer}/>
               </Switch>
             </ContentContainer>
-          </FlexContent>
+          </div>
         </AllContent>
       </ConnectedRouter>
     )
@@ -112,4 +114,4 @@ function mapDispatchToProps (dispatch) {
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App))
