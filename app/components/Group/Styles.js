@@ -19,10 +19,10 @@ export const SideBar = FlexDivShared.extend`
 
 export const sideBarStyles = theme => ({
   list: {
-    paddingBottom: '32px',
+    marginBottom: '32px',
   },
   listItem: {
-    padding: '5px 0',
+    padding: '5px 0 0 0 ',
   },
   listItemText: {
     color: 'rgba(0, 0, 0, 0.64)',
