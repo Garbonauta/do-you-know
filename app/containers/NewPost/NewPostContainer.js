@@ -1,36 +1,47 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { NewPost } from 'components'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import * as groupPostsActionCreators from 'redux/modules/groupPosts'
+import { NewPost } from 'components'
 
 class NewPostContainer extends Component {
   static propTypes = {
     groupId: PropTypes.string.isRequired,
+    accessToken: PropTypes.string.isRequired,
     messages: PropTypes.object.isRequired,
+    postAndHandleGroupPost: PropTypes.func.isRequired,
   }
-  submit = (values) => {
-    return new Promise((resolve, reject) => {
-      console.log(values)
-      resolve(true)
-    })
+  submit = (groupId, values) => {
+    const {accessToken, postAndHandleGroupPost} = this.props
+    return postAndHandleGroupPost(accessToken, groupId, values)
   }
   render () {
-    const {messages} = this.props
+    const {messages, groupId} = this.props
     return (
       <NewPost
         messages={messages}
+        groupId={groupId}
         onSubmit={this.submit}/>
     )
   }
 }
 
-function mapStateToProps ({groups, intl}, props) {
+function mapStateToProps ({users, groups, intl}) {
   return {
     isFetching: groups.get('isFetching'),
+    accessToken: users.get('accessToken'),
     messages: {
       newQuestion: intl.messages.newQuestion,
     },
   }
 }
 
-export default connect(mapStateToProps)(NewPostContainer)
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators(
+    {
+      ...groupPostsActionCreators,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewPostContainer)

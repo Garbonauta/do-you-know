@@ -16,6 +16,7 @@ import { PostDiv, ActionsDiv, Form, styles } from './Styles'
 function NewPost (
   {
     messages: {newQuestion},
+    groupId,
     onSubmit,
     classes: {newPostContainer},
   }) {
@@ -29,7 +30,7 @@ function NewPost (
           <Formik
             onSubmit={async (values, {setSubmitting, setErrors}) => {
               try {
-                await onSubmit(values)
+                await onSubmit(groupId, values)
                 setSubmitting(false)
               } catch (error) {
                 setSubmitting(false)
@@ -76,6 +77,7 @@ NewPost.propTypes = {
   messages: PropTypes.shape({
     newQuestion: PropTypes.string.isRequired,
   }),
+  groupId: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 }

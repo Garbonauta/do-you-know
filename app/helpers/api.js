@@ -28,3 +28,19 @@ export function getGroups (accessToken, groups) {
         .then(data => response.ok ? data : Promise.reject(data))
     })
 }
+
+export function postGroupPost (accessToken, groupId, post) {
+  return fetch(`${server}/groups/${groupId}/posts`, {
+    method: 'post',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(post),
+  })
+    .then(response => {
+      return response.json()
+        .then(data => response.ok ? data : Promise.reject(data))
+    })
+}
