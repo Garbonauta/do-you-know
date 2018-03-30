@@ -10,6 +10,7 @@ import * as routeActionCreators from 'redux/modules/route'
 class NavigationContainer extends Component {
   static propTypes = {
     messages: PropTypes.object.isRequired,
+    authed: PropTypes.bool.isRequired,
     pictureUrl: PropTypes.string.isRequired,
     drawerOpen: PropTypes.bool.isRequired,
     drawerToggle: PropTypes.func.isRequired,
@@ -43,11 +44,12 @@ class NavigationContainer extends Component {
   }
 
   render () {
-    const {messages, pictureUrl, drawerOpen, drawerToggle} = this.props
+    const {messages, pictureUrl, drawerOpen, drawerToggle, authed} = this.props
 
     return (
       <div>
         <NavBar
+          authed={authed}
           messages={messages}
           pictureUrl={pictureUrl}
           iconAction={drawerToggle}

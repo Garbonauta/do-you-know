@@ -63,7 +63,10 @@ class App extends Component {
     return (
       <ConnectedRouter history={history}>
         <AllContent>
-          {isAuthed && <NavigationContainer drawerToggle={this.handleDrawerToggle} drawerOpen={this.state.drawerOpen} />}
+          <NavigationContainer
+            authed={isAuthed}
+            drawerToggle={this.handleDrawerToggle}
+            drawerOpen={this.state.drawerOpen} />
           <div>
             <div className={toolbar}/>
             <ContentContainer open={this.state.drawerOpen && isAuthed} className={content}>

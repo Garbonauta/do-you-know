@@ -15,9 +15,8 @@ function NavDrawer (
   return (
     <Drawer variant='persistent' open={open} classes={{paper: paper, paperAnchorDockedLeft: anchorLeft}}>
       <div className={toolbar}/>
-      <MenuList subheader={<ListSubheader>{messages.group}</ListSubheader>}>
+      {!isFetching && <MenuList subheader={<ListSubheader>{messages.group}</ListSubheader>}>
         {
-          !isFetching &&
           sortedIds.map(id => {
             const url = `/group/${id}`
             return (
@@ -27,7 +26,7 @@ function NavDrawer (
             )
           })
         }
-      </MenuList>
+      </MenuList>}
     </Drawer>
   )
 }

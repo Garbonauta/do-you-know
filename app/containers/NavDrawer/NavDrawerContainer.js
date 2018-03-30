@@ -47,7 +47,7 @@ function mapStateToProps ({users, intl, groups, routing}) {
     groups: groups.filter(group => {
       return Map.isMap(group) && users.get(uid).get('userGroups').contains(group.get('id'))
     }).toJS() || {},
-    favoriteGroup: users.get(uid).get('favoriteGroup'),
+    favoriteGroup: users.get(uid) ? users.get(uid).get('favoriteGroup') : '',
     messages: {
       loading: intl.messages.loading,
       group: intl.messages.group,

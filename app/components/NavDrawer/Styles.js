@@ -1,6 +1,5 @@
 export const styles = theme => ({
   paper: {
-    willChange: 'top, left',
     width: '232px',
     backgroundColor: 'inherit',
   },

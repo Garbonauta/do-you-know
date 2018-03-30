@@ -1,16 +1,13 @@
 import styled from 'styled-components'
-import { FlexDiv as FlexDivShared, Link as LinkShared } from 'sharedStyles'
+import { FlexDiv as FlexDivShared } from 'sharedStyles'
 
 export const FlexDiv = FlexDivShared.extend`
   justify-content: space-between;
 `
 
 export const GroupContent = styled.div`
-  width: 100%;
-`
-
-export const Header = styled.h1`
-  text-align: center;
+  flex: 1;
+  padding-right: 24px;
 `
 
 export const SideBar = FlexDivShared.extend`
@@ -20,9 +17,9 @@ export const SideBar = FlexDivShared.extend`
   flex-direction: column;
 `
 
-export const styles = theme => ({
+export const sideBarStyles = theme => ({
   list: {
-    paddingBottom: '24px',
+    paddingBottom: '32px',
   },
   listItem: {
     padding: '5px 0',

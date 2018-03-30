@@ -5,5 +5,6 @@ const messages = {
   'group': 'Grupos',
   'moderators': 'Moderadores',
   'createdBy': 'Creador del Grupo',
+  'newQuestion': '¡Quiero hacer una pregunta!',
 }
 export default messages
