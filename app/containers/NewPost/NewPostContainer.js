@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as groupPostsActionCreators from 'redux/modules/groupPosts'
+import * as postsActionCreators from 'redux/modules/posts'
 import { NewPost } from 'components'
 
 class NewPostContainer extends Component {
@@ -11,12 +11,12 @@ class NewPostContainer extends Component {
     accessToken: PropTypes.string.isRequired,
     authedUID: PropTypes.string.isRequired,
     messages: PropTypes.object.isRequired,
-    postAndHandleGroupPost: PropTypes.func.isRequired,
+    postAndHandlePost: PropTypes.func.isRequired,
   }
   submit = (groupId, values) => {
-    const {accessToken, postAndHandleGroupPost, authedUID} = this.props
+    const {accessToken, postAndHandlePost, authedUID} = this.props
     values.owner = authedUID
-    return postAndHandleGroupPost(accessToken, groupId, values)
+    return postAndHandlePost(accessToken, groupId, values)
   }
   render () {
     const {messages, groupId} = this.props
@@ -43,7 +43,7 @@ function mapStateToProps ({users, groups, intl}) {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators(
     {
-      ...groupPostsActionCreators,
+      ...postsActionCreators,
     }, dispatch)
 }
 

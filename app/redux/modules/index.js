@@ -1,3 +1,4 @@
 export friends from './friends'
-export users from './users'
 export groups from './groups'
+export posts from './posts'
+export users from './users'

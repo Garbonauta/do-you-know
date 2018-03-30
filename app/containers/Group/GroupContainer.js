@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Typography from 'material-ui/Typography'
-import { NewPostContainer } from 'containers'
-import { Group, GroupSideBar, NewPost } from 'components'
+import { NewPostContainer, PostListContainer } from 'containers'
+import { Group, GroupSideBar } from 'components'
 import { FlexDiv } from 'sharedStyles'
 
 class GroupContainer extends Component {
@@ -45,6 +45,7 @@ class GroupContainer extends Component {
           <Group>
             <Typography variant='title'>{name}</Typography>
             <NewPostContainer groupId={groupId}/>
+            <PostListContainer groupId={groupId}/>
           </Group>
           <GroupSideBar
             owner={owner}
