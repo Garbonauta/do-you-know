@@ -6,6 +6,7 @@ const FETCHING_POSTS = 'FETCHING_POSTS'
 const FETCHING_POSTS_ERROR = 'FETCHING_POSTS_ERROR'
 const FETCHING_BULK_POSTS_SUCCESS = 'FETCHING_BULK_POSTS_SUCCESS'
 const FETCHING_POST_SUCCESS = 'FETCHING_POST_SUCCESS'
+const CLEAR_POSTS = 'CLEAR_POSTS'
 const ADD_POST = 'ADD_POST'
 const ADD_POST_ERROR = 'ADD_POST_ERROR'
 const DELETE_POST = 'DELETE_POST'
@@ -30,6 +31,12 @@ function fetchingBulkPostSuccess (posts) {
   return {
     type: FETCHING_BULK_POSTS_SUCCESS,
     posts,
+  }
+}
+
+function clearPosts () {
+  return {
+    type: CLEAR_POSTS,
   }
 }
 
@@ -79,10 +86,11 @@ export function handleDeletePost (accessToken, groupId, postId) {
 
 }
 
-export function fetchAndHandleGroupPosts (accessToken, groupId) {
+export function fetchAndHandleGroupPosts (accessToken, groupId, clear) {
   return async function (dispatch) {
     try {
       dispatch(fetchingPosts())
+      clear && dispatch(clearPosts())
       const posts = await getGroupPosts(accessToken, groupId)
       dispatch(fetchingBulkPostSuccess(formatPostsPayload(posts)))
     } catch (error) {
@@ -131,11 +139,17 @@ export default function posts (state = initialState, action) {
         error: action.error,
       })
     case FETCHING_BULK_POSTS_SUCCESS :
-      return Map({
+      return state.merge({
         isFetching: false,
         lastUpdated: Date.now,
         error: '',
         ...action.posts,
+      })
+    case CLEAR_POSTS:
+      return Map({
+        isFetching: state.get('isFetching'),
+        lastUpdated: state.get('lastUpdated'),
+        error: state.get('error'),
       })
     case ADD_POST:
       return state.merge({
