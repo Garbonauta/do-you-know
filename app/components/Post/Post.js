@@ -2,11 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import { FormattedTime, FormattedRelative } from 'react-intl'
+import { Manager, Target, Popper } from 'react-popper'
+import ClickAwayListener from 'material-ui/utils/ClickAwayListener'
+import Grow from 'material-ui/transitions/Grow'
+import Paper from 'material-ui/Paper'
 import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
 import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card'
+import { MenuList, MenuItem } from 'material-ui/Menu'
 import IconButton from 'material-ui/IconButton'
-import MoreVertIcon from 'material-ui-icons/MoreVert'
+import MoreHorizIcon from 'material-ui-icons/MoreHoriz'
 import { styles } from './Styles'
 
 function FormatDateString ({date}) {
@@ -32,8 +37,44 @@ FormatDateString.propTypes = {
   date: PropTypes.number.isRequired,
 }
 
+function PostMenu ({open, onClick, handleClose}) {
+  return (
+    <div>
+      <Manager>
+        <Target>
+          <IconButton onClick={onClick}>
+            <MoreHorizIcon/>
+          </IconButton>
+        </Target>
+        <Popper
+          placement='bottom-start'
+          eventsEnabled={open}>
+          <ClickAwayListener onClickAway={handleClose}>
+            <Grow in={open} id='post-list-grow' style={{ transformOrigin: '0 0 0' }}>
+              <Paper>
+                <MenuList role='menu'>
+                  <MenuItem button={true}>{'Delete'}</MenuItem>
+                </MenuList>
+              </Paper>
+            </Grow>
+          </ClickAwayListener>
+        </Popper>
+      </Manager>
+    </div>
+  )
+}
+
+PostMenu.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+}
+
 function Post (
   {
+    actionOpen,
+    actionClick,
+    actionClose,
     post: {postId, text, createdAt, owner: {fullName, link, small}},
     classes: {root},
   }) {
@@ -43,9 +84,7 @@ function Post (
         avatar={<Avatar src={small}/>}
         title={fullName}
         subheader={<FormatDateString date={createdAt}/>}
-        action={<IconButton>
-          <MoreVertIcon/>
-        </IconButton>}/>
+        action={<PostMenu open={actionOpen} onClick={actionClick} handleClose={actionClose}/>}/>
       <CardContent>
         <Typography variant='body1'>{text}</Typography>
       </CardContent>
@@ -53,6 +92,9 @@ function Post (
   )
 }
 Post.propTypes = {
+  actionOpen: PropTypes.bool.isRequired,
+  actionClick: PropTypes.func.isRequired,
+  actionClose: PropTypes.func.isRequired,
   post: PropTypes.shape({
     postId: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,

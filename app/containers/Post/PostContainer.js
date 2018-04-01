@@ -11,6 +11,19 @@ class PostContainer extends Component {
     accessToken: PropTypes.string.isRequired,
     handleDeletePost: PropTypes.func.isRequired,
   }
+  state = {
+    actionMenuVisible: false,
+  }
+  handleClickAction = () => {
+    this.setState({
+      actionMenuVisible: !this.state.actionMenuVisible,
+    })
+  }
+  handleCloseAction = () => {
+    this.setState({
+      actionMenuVisible: false,
+    })
+  }
   delete = async () => {
     const { accessToken, post: {groupId, postId}, handleDeletePost } = this.props
     try {
@@ -25,6 +38,9 @@ class PostContainer extends Component {
     const { post } = this.props
     return (
       <Post
+        actionOpen={this.state.actionMenuVisible}
+        actionClick={this.handleClickAction}
+        actionClose={this.handleCloseAction}
         post={post}/>
     )
   }

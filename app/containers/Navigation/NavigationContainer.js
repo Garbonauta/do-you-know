@@ -19,7 +19,6 @@ class NavigationContainer extends Component {
   }
   state = {
     actionOpen: false,
-    anchorE1: null,
   }
   handleHome = (e) => {
     e.preventDefault()
@@ -28,8 +27,7 @@ class NavigationContainer extends Component {
   handleAvatarClick = (e) => {
     e.preventDefault()
     this.setState({
-      actionOpen: true,
-      anchorE1: e.currentTarget,
+      actionOpen: !this.state.actionOpen,
     })
   }
   handleAvatarRequestClose = () => {
@@ -54,7 +52,6 @@ class NavigationContainer extends Component {
           pictureUrl={pictureUrl}
           iconAction={drawerToggle}
           avatarOpen={this.state.actionOpen}
-          avatarAnchor={this.state.anchorE1}
           avatarClick={this.handleAvatarClick}
           avatarRequestClose={this.handleAvatarRequestClose}
           handleHome={this.handleHome}
