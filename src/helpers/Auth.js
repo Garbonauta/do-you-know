@@ -3,10 +3,10 @@ import { oAuthAuthToObjAuth, decodeJwt } from 'helpers/utils'
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
-    domain: process.env.AUTH0_DOMAIN,
-    clientID: process.env.AUTH0_CLIENT_ID,
-    redirectUri: process.env.CALLBACK_URL,
-    audience: process.env.AUTH0_AUDIENCE,
+    domain: process.env.REACT_APP_AUTH0_DOMAIN,
+    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+    redirectUri: process.env.REACT_APP_CALLBACK_URL,
+    audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     responseType: 'token id_token',
     scope: 'openid',
   })

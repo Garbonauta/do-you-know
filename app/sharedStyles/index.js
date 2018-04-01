@@ -1,6 +1,0 @@
-export Button from './Button'
-export CenteredContainer from './CenteredContainer'
-export ErrorMsg from './ErrorMsg'
-export FlexDiv from './FlexDiv'
-export Global from './Global'
-export Link from './Link'

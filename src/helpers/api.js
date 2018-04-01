@@ -1,4 +1,4 @@
-const server = process.env.SERVER_URL
+const server = process.env.REACT_APP_SERVER_URL
 
 function getQuery (accessToken, url) {
   return fetch(url, {
