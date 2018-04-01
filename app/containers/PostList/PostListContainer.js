@@ -5,12 +5,21 @@ import { bindActionCreators } from 'redux'
 import * as groupPostsActionCreators from 'redux/modules/posts'
 import { PostList } from 'components'
 
+function getPostsArray (obj) {
+  if (Object.keys(obj).length === 0) {
+    return []
+  }
+  return Object.values(obj).sort((a, b) => {
+    return b.createdAt - a.createdAt
+  })
+}
+
 class PostListContainer extends Component {
   static propTypes = {
     isFetching: PropTypes.bool.isRequired,
     accessToken: PropTypes.string.isRequired,
     groupId: PropTypes.string.isRequired,
-    posts: PropTypes.object,
+    posts: PropTypes.array.isRequired,
     fetchAndHandleGroupPosts: PropTypes.func.isRequired,
   }
   state = {
@@ -27,20 +36,23 @@ class PostListContainer extends Component {
     }
   }
   render () {
-    const { isFetching, posts } = this.props
+    const { isFetching, posts, groupId } = this.props
     return (
       <PostList
         isFetching={isFetching}
+        groupId={groupId}
         posts={posts}/>
     )
   }
 }
 
 function mapStateToProps ({users, posts, intl: {messages}}) {
+  const {isFetching, lastUpdated, error, ...postObj} = posts.toJS()
+  const postArr = getPostsArray(postObj)
   return {
-    isFetching: posts.get('isFetching'),
+    isFetching: isFetching,
     accessToken: users.get('accessToken'),
-    posts: posts.get('posts'),
+    posts: postArr || [],
   }
 }
 

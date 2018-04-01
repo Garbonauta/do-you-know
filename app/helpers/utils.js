@@ -33,3 +33,21 @@ export function groupsObjectFromArray (groupsArray) {
     return accum
   }, {})
 }
+
+export function formatPostsPayload ({_id: groupId, posts}) {
+  return posts.reduce((accum, {_id: postId, text, createdAt, owner: {_id: userId, info: {fullName, link, pictures: {small}}}}) => {
+    accum[postId] = {
+      groupId,
+      postId,
+      text,
+      createdAt: Date.parse(createdAt),
+      owner: {
+        userId,
+        fullName,
+        link,
+        small,
+      },
+    }
+    return accum
+  }, {})
+}

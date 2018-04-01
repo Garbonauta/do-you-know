@@ -16,6 +16,7 @@ class NewPostContainer extends Component {
   submit = (groupId, values) => {
     const {accessToken, postAndHandlePost, authedUID} = this.props
     values.owner = authedUID
+    values.createdAt = Date.now()
     return postAndHandlePost(accessToken, groupId, values)
   }
   render () {
