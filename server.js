@@ -4,6 +4,8 @@ const app = express()
 // Since the root/src dir contains our index.html
 app.use(express.static(__dirname + '/dist/'))
 
+console.log('start env', process.env)
+
 // Heroku bydefault set an ENV variable called PORT=443
 //  so that you can access your site with https default port.
 // Falback port will be 8080; basically for pre-production test in localhost

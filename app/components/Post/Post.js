@@ -47,7 +47,7 @@ function PostMenu ({open, onClick, handleClose}) {
           </IconButton>
         </Target>
         <Popper
-          placement='bottom-start'
+          placement='bottom-end'
           eventsEnabled={open}>
           <ClickAwayListener onClickAway={handleClose}>
             <Grow in={open} id='post-list-grow' style={{ transformOrigin: '0 0 0' }}>
