@@ -5,7 +5,6 @@ export const AllContent = styled.div`
 `
 
 export const ContentContainer = styled.div`
-    display: flex,
     max-width: 1400px;
     margin: ${props => props.open ? '10px 104px 10px 312px' : '10px 104px 10px 56px'};
     padding: 1em 0.5em;
