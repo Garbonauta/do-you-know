@@ -1,5 +1,7 @@
 export Callback from './Callback/Callback'
 export Group from './Group/Group'
+export GroupContent from './Group/GroupContent'
+export GroupHeader from './Group/GroupHeader'
 export GroupSideBar from './Group/GroupSideBar'
 export Home from './Home/Home'
 export Login from './Login/Login'

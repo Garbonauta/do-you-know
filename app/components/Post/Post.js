@@ -4,7 +4,9 @@ import { withStyles } from 'material-ui/styles'
 import { FormattedTime, FormattedRelative } from 'react-intl'
 import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
-import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
+import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card'
+import IconButton from 'material-ui/IconButton'
+import MoreVertIcon from 'material-ui-icons/MoreVert'
 import { styles } from './Styles'
 
 function FormatDateString ({date}) {
@@ -40,7 +42,10 @@ function Post (
       <CardHeader
         avatar={<Avatar src={small}/>}
         title={fullName}
-        subheader={<FormatDateString date={createdAt}/>}/>
+        subheader={<FormatDateString date={createdAt}/>}
+        action={<IconButton>
+          <MoreVertIcon/>
+        </IconButton>}/>
       <CardContent>
         <Typography variant='body1'>{text}</Typography>
       </CardContent>

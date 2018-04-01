@@ -1,5 +1,5 @@
 export const styles = theme => ({
-  root: theme.mixins.gutters({
+  root: {
     marginTop: theme.spacing.unit * 3,
-  }),
+  },
 })

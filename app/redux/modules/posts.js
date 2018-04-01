@@ -77,7 +77,7 @@ export function postAndHandlePost (accessToken, groupId, data) {
         },
       }))
     } catch (error) {
-      dispatch()
+      dispatch(addPostError(error))
     }
   }
 }

@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Typography from 'material-ui/Typography'
 import { NewPostContainer, PostListContainer } from 'containers'
-import { Group, GroupSideBar } from 'components'
-import { FlexDiv } from 'sharedStyles'
+import { Group, GroupContent, GroupSideBar, GroupHeader } from 'components'
 
 class GroupContainer extends Component {
   static propTypes = {
@@ -21,6 +19,15 @@ class GroupContainer extends Component {
       owner: PropTypes.object,
       moderators: PropTypes.array,
     }),
+  }
+  state = {
+    sideBarVisible: true,
+  }
+  toggleSideBar = (e) => {
+    e.preventDefault()
+    this.setState({
+      sideBarVisible: !this.state.sideBarVisible,
+    })
   }
   render () {
     const {
@@ -39,20 +46,24 @@ class GroupContainer extends Component {
           moderators: moderatorMsg,
         },
     } = this.props
+    const { sideBarVisible } = this.state
     return (
       <div>
-        {!isFetching && <FlexDiv>
-          <Group>
-            <Typography variant='title'>{name}</Typography>
+        {!isFetching && <Group>
+          <GroupHeader
+            title={name}
+            sideBarVisible={sideBarVisible}
+            toggleSideBar={this.toggleSideBar}/>
+          <GroupContent>
             <NewPostContainer groupId={groupId}/>
             <PostListContainer groupId={groupId}/>
-          </Group>
-          <GroupSideBar
+          </GroupContent>
+          {sideBarVisible && <GroupSideBar
             owner={owner}
             createdByMsg={createdBy}
             moderators={moderators}
-            moderatorMsg={moderatorMsg}/>
-        </FlexDiv>}
+            moderatorMsg={moderatorMsg}/>}
+        </Group>}
       </div>
     )
   }

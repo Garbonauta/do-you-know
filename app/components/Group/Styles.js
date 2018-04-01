@@ -2,12 +2,20 @@ import styled from 'styled-components'
 import { FlexDiv as FlexDivShared } from 'sharedStyles'
 
 export const FlexDiv = FlexDivShared.extend`
-  justify-content: space-between;
+  flex-wrap: wrap;
 `
 
-export const GroupContent = styled.div`
+export const Content = styled.div`
   flex: 1;
   padding-right: 24px;
+`
+
+export const Header = styled.div`
+  width: 100%;
+`
+
+export const Title = styled.span`
+  flex: 1;
 `
 
 export const SideBar = FlexDivShared.extend`

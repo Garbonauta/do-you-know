@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { GroupContent } from './Styles'
+import { FlexDiv } from './Styles'
 
 export default function Group ({children}) {
   return (
-    <GroupContent>
+    <FlexDiv>
       {children}
-    </GroupContent>
+    </FlexDiv>
   )
 }
 Group.propTypes = {

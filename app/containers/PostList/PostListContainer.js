@@ -27,7 +27,7 @@ class PostListContainer extends Component {
   }
   componentDidMount () {
     const {accessToken, fetchAndHandleGroupPosts, groupId} = this.props
-    fetchAndHandleGroupPosts(accessToken, groupId, true)
+    fetchAndHandleGroupPosts(accessToken, groupId, false)
   }
   componentDidUpdate ({groupId}) {
     if (this.props.groupId !== groupId) {

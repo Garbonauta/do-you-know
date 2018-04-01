@@ -63,6 +63,7 @@ function NewPost (
                   variant='raised'
                   color='primary'
                   type='submit'
+                  name='submitPost'
                   disabled={isSubmitting}>
                   {'Submit'}
                 </Button>
