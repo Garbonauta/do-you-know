@@ -25,7 +25,11 @@ class PostContainer extends Component {
     })
   }
   delete = async () => {
-    const { accessToken, post: {groupId, postId}, handleDeletePost } = this.props
+    const {
+      accessToken,
+      post: { groupId, postId },
+      handleDeletePost,
+    } = this.props
     try {
       await handleDeletePost(accessToken, groupId, postId)
     } catch (error) {
@@ -34,29 +38,33 @@ class PostContainer extends Component {
       })
     }
   }
-  render () {
+  render() {
     const { post } = this.props
     return (
       <Post
         actionOpen={this.state.actionMenuVisible}
         actionClick={this.handleClickAction}
         actionClose={this.handleCloseAction}
-        post={post}/>
+        deleteAction={this.delete}
+        post={post}
+      />
     )
   }
 }
 
-function mapStateToProps ({users}) {
+function mapStateToProps({ users }) {
   return {
     accessToken: users.get('accessToken'),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...groupPostsActionCreators,
-    }, dispatch)
+    },
+    dispatch
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostContainer)

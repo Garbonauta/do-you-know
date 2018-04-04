@@ -1,5 +1,5 @@
 import { Map, List, fromJS } from 'immutable'
-import { getGroupPosts, postGroupPost } from 'helpers/api'
+import { getGroupPosts, postGroupPost, deleteGroupPost } from 'helpers/api'
 import { formatPostsPayload } from 'helpers/utils'
 
 const FETCHING_POSTS = 'FETCHING_POSTS'
@@ -11,15 +11,15 @@ const ADD_POST = 'ADD_POST'
 const ADD_POST_ERROR = 'ADD_POST_ERROR'
 const DELETE_POST = 'DELETE_POST'
 const DELETE_POST_ERROR = 'DELETE_POST_ERROR'
-const EDIT_POST= 'EDIT_POST'
+const EDIT_POST = 'EDIT_POST'
 
-function fetchingPosts () {
+function fetchingPosts() {
   return {
     type: FETCHING_POSTS,
   }
 }
 
-function fetchingPostsError (error) {
+function fetchingPostsError(error) {
   console.warn(error)
   return {
     type: FETCHING_POSTS_ERROR,
@@ -27,20 +27,20 @@ function fetchingPostsError (error) {
   }
 }
 
-function fetchingBulkPostSuccess (posts) {
+function fetchingBulkPostSuccess(posts) {
   return {
     type: FETCHING_BULK_POSTS_SUCCESS,
     posts,
   }
 }
 
-function clearPosts () {
+function clearPosts() {
   return {
     type: CLEAR_POSTS,
   }
 }
 
-function addPost (groupId, {postId, text, createdAt, owner}) {
+function addPost(groupId, { postId, text, createdAt, owner }) {
   const createdDate = Date.parse(createdAt)
   return {
     type: ADD_POST,
@@ -52,7 +52,7 @@ function addPost (groupId, {postId, text, createdAt, owner}) {
   }
 }
 
-function addPostError (error) {
+function addPostError(error) {
   console.warn(error)
   return {
     type: ADD_POST_ERROR,
@@ -60,34 +60,61 @@ function addPostError (error) {
   }
 }
 
-export function postAndHandlePost (accessToken, groupId, data) {
-  return async function (dispatch, state) {
+function deletePost(postId) {
+  return {
+    type: DELETE_POST,
+    postId,
+  }
+}
+
+function deletePostError(error) {
+  console.warn(error)
+  return {
+    type: ADD_POST_ERROR,
+    error: 'error deleting post',
+  }
+}
+
+export function postAndHandlePost(accessToken, groupId, data) {
+  return async function(dispatch, state) {
     try {
       const post = await postGroupPost(accessToken, groupId, data)
-      const user = state().users.get(post.owner).get('info').toJS()
-      dispatch(addPost(groupId, {
-        postId: post._id,
-        text: post.text,
-        createdAt: post.createdAt,
-        owner: {
-          userId: post.owner,
-          fullName: user.fullName,
-          link: user.link,
-          small: user.pictures.small,
-        },
-      }))
+      const user = state()
+        .users.get(post.owner)
+        .get('info')
+        .toJS()
+      dispatch(
+        addPost(groupId, {
+          postId: post._id,
+          text: post.text,
+          createdAt: post.createdAt,
+          owner: {
+            userId: post.owner,
+            fullName: user.fullName,
+            link: user.link,
+            small: user.pictures.small,
+          },
+        })
+      )
     } catch (error) {
       dispatch(addPostError(error))
     }
   }
 }
 
-export function handleDeletePost (accessToken, groupId, postId) {
-
+export function handleDeletePost(accessToken, groupId, postId) {
+  return async function(dispatch) {
+    try {
+      await deleteGroupPost(accessToken, groupId, postId)
+      dispatch(deletePost(postId))
+    } catch (error) {
+      dispatch(deletePostError(error))
+    }
+  }
 }
 
-export function fetchAndHandleGroupPosts (accessToken, groupId, clear) {
-  return async function (dispatch) {
+export function fetchAndHandleGroupPosts(accessToken, groupId, clear) {
+  return async function(dispatch) {
     try {
       dispatch(fetchingPosts())
       clear && dispatch(clearPosts())
@@ -106,7 +133,7 @@ const initialPostState = Map({
   owner: {},
 })
 
-function post (state = initialPostState, action) {
+function post(state = initialPostState, action) {
   switch (action.type) {
     case ADD_POST:
       return state.merge({
@@ -127,18 +154,18 @@ const initialState = Map({
   error: '',
 })
 
-export default function posts (state = initialState, action) {
+export default function posts(state = initialState, action) {
   switch (action.type) {
-    case FETCHING_POSTS :
+    case FETCHING_POSTS:
       return state.merge({
         isFetching: true,
       })
-    case FETCHING_POSTS_ERROR :
+    case FETCHING_POSTS_ERROR:
       return Map({
         isFetching: false,
         error: action.error,
       })
-    case FETCHING_BULK_POSTS_SUCCESS :
+    case FETCHING_BULK_POSTS_SUCCESS:
       return state.merge({
         isFetching: false,
         lastUpdated: Date.now,
@@ -159,7 +186,11 @@ export default function posts (state = initialState, action) {
       return state.merge({
         error: action.error,
       })
+    case DELETE_POST:
+      return state.delete(action.postId)
     default:
-      return state
+      return state.merge({
+        error: action.error,
+      })
   }
 }

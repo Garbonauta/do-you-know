@@ -8,13 +8,18 @@ import Grow from 'material-ui/transitions/Grow'
 import Paper from 'material-ui/Paper'
 import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
-import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card'
+import Card, {
+  CardHeader,
+  CardMedia,
+  CardContent,
+  CardActions,
+} from 'material-ui/Card'
 import { MenuList, MenuItem } from 'material-ui/Menu'
 import IconButton from 'material-ui/IconButton'
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz'
 import { styles } from './Styles'
 
-function FormatDateString ({date}) {
+function FormatDateString({ date }) {
   const DAY = 1000 * 60 * 60 * 24
   const dayAgo = date < Date.now() - DAY
   return (
@@ -22,12 +27,13 @@ function FormatDateString ({date}) {
       <FormattedTime
         value={date}
         hour12={true}
-        year='numeric'
-        month='2-digit'
-        day='2-digit'
-        hour='2-digit'
-        minute='2-digit'
-        second='2-digit'/>
+        year="numeric"
+        month="2-digit"
+        day="2-digit"
+        hour="2-digit"
+        minute="2-digit"
+        second="2-digit"
+      />
       {!dayAgo && ' '}
       {!dayAgo && <FormattedRelative value={date} />}
     </span>
@@ -37,23 +43,27 @@ FormatDateString.propTypes = {
   date: PropTypes.number.isRequired,
 }
 
-function PostMenu ({open, onClick, handleClose}) {
+function PostMenu({ open, onClick, handleClose, deleteAction }) {
   return (
     <div>
       <Manager>
         <Target>
           <IconButton onClick={onClick}>
-            <MoreHorizIcon/>
+            <MoreHorizIcon />
           </IconButton>
         </Target>
-        <Popper
-          placement='bottom-end'
-          eventsEnabled={open}>
+        <Popper placement="bottom-end" eventsEnabled={open}>
           <ClickAwayListener onClickAway={handleClose}>
-            <Grow in={open} id='post-list-grow' style={{ transformOrigin: '0 0 0' }}>
+            <Grow
+              in={open}
+              id="post-list-grow"
+              style={{ transformOrigin: '0 0 0' }}
+            >
               <Paper>
-                <MenuList role='menu'>
-                  <MenuItem button={true}>{'Delete'}</MenuItem>
+                <MenuList role="menu">
+                  <MenuItem button={true} onClick={deleteAction}>
+                    {'Delete'}
+                  </MenuItem>
                 </MenuList>
               </Paper>
             </Grow>
@@ -68,33 +78,39 @@ PostMenu.propTypes = {
   open: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
+  deleteAction: PropTypes.func.isRequired,
 }
 
-function Post (
-  {
-    actionOpen,
-    actionClick,
-    actionClose,
-    post: {postId, text, createdAt, owner: {fullName, link, small}},
-    classes: {root},
-  }) {
+function Post({
+  actionOpen,
+  actionClick,
+  actionClose,
+  deleteAction,
+  post: { postId, text, createdAt, owner: { fullName, link, small } },
+  classes: { root },
+}) {
   return (
     <Card className={root}>
       <CardHeader
-        avatar={<Avatar src={small}/>}
+        avatar={<Avatar src={small} />}
         title={fullName}
-        subheader={<FormatDateString date={createdAt}/>}
-        action={<PostMenu open={actionOpen} onClick={actionClick} handleClose={actionClose}/>}/>
+        subheader={<FormatDateString date={createdAt} />}
+        action={
+          <PostMenu
+            open={actionOpen}
+            onClick={actionClick}
+            handleClose={actionClose}
+            deleteAction={deleteAction}
+          />
+        }
+      />
       <CardContent>
-        <Typography variant='body1'>{text}</Typography>
+        <Typography variant="body1">{text}</Typography>
       </CardContent>
     </Card>
   )
 }
 Post.propTypes = {
-  actionOpen: PropTypes.bool.isRequired,
-  actionClick: PropTypes.func.isRequired,
-  actionClose: PropTypes.func.isRequired,
   post: PropTypes.shape({
     postId: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
@@ -105,6 +121,10 @@ Post.propTypes = {
       small: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  actionOpen: PropTypes.bool.isRequired,
+  actionClick: PropTypes.func.isRequired,
+  actionClose: PropTypes.func.isRequired,
+  deleteAction: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 }
 

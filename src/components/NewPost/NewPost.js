@@ -13,22 +13,21 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore'
 import Button from 'material-ui/Button'
 import { PostDiv, ActionsDiv, Form, styles } from './Styles'
 
-function NewPost (
-  {
-    messages: {newQuestion},
-    groupId,
-    onSubmit,
-    classes: {newPostContainer},
-  }) {
+function NewPost({
+  messages: { newQuestion },
+  groupId,
+  onSubmit,
+  classes: { newPostContainer },
+}) {
   return (
     <PostDiv className={newPostContainer}>
       <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-          <Typography variant='subheading'>{newQuestion}</Typography>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="subheading">{newQuestion}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Formik
-            onSubmit={async (values, {setSubmitting, setErrors}) => {
+            onSubmit={async (values, { setSubmitting, setErrors }) => {
               try {
                 await onSubmit(groupId, values)
                 setSubmitting(false)
@@ -45,29 +44,33 @@ function NewPost (
               handleBlur,
               handleSubmit,
               isSubmitting,
-            }) =>
-              (<Form onSubmit={handleSubmit}>
-                <FormControl fullWidth={true} margin='normal'>
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <FormControl fullWidth={true} margin="normal">
                   <Input
                     multiline={true}
                     rowsMax={5}
-                    name='postText'
+                    name="postText"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.question}/>
+                    value={values.question}
+                  />
                 </FormControl>
                 <ActionsDiv>
                   <div>{'Image Upload'}</div>
                 </ActionsDiv>
                 <Button
-                  variant='raised'
-                  color='primary'
-                  type='submit'
-                  name='submitPost'
-                  disabled={isSubmitting}>
+                  variant="raised"
+                  color="primary"
+                  type="submit"
+                  name="submitPost"
+                  disabled={isSubmitting}
+                >
                   {'Submit'}
                 </Button>
-              </Form>)}/>
+              </Form>
+            )}
+          />
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </PostDiv>
