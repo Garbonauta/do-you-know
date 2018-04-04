@@ -43,7 +43,7 @@ FormatDateString.propTypes = {
   date: PropTypes.number.isRequired,
 }
 
-function PostMenu({ open, onClick, handleClose, deleteAction }) {
+function PostMenu({ open, onClick, handleClose, deleteAction, messages }) {
   return (
     <div>
       <Manager>
@@ -62,7 +62,7 @@ function PostMenu({ open, onClick, handleClose, deleteAction }) {
               <Paper>
                 <MenuList role="menu">
                   <MenuItem button={true} onClick={deleteAction}>
-                    {'Delete'}
+                    {messages['postMenu.delete']}
                   </MenuItem>
                 </MenuList>
               </Paper>
@@ -79,6 +79,10 @@ PostMenu.propTypes = {
   onClick: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   deleteAction: PropTypes.func.isRequired,
+  messages: PropTypes.shape({
+    'postMenu.delete': PropTypes.string.isRequired,
+    'postMenu.edit': PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 function Post({
@@ -87,6 +91,7 @@ function Post({
   actionClose,
   deleteAction,
   post: { postId, text, createdAt, owner: { fullName, link, small } },
+  messages,
   classes: { root },
 }) {
   return (
@@ -101,6 +106,7 @@ function Post({
             onClick={actionClick}
             handleClose={actionClose}
             deleteAction={deleteAction}
+            messages={messages}
           />
         }
       />
@@ -125,6 +131,7 @@ Post.propTypes = {
   actionClick: PropTypes.func.isRequired,
   actionClose: PropTypes.func.isRequired,
   deleteAction: PropTypes.func.isRequired,
+  messages: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 }
 

@@ -14,38 +14,37 @@ class NewPostContainer extends Component {
     postAndHandlePost: PropTypes.func.isRequired,
   }
   submit = (groupId, values) => {
-    const {accessToken, postAndHandlePost, authedUID} = this.props
+    const { accessToken, postAndHandlePost, authedUID } = this.props
     values.owner = authedUID
     values.createdAt = Date.now()
     return postAndHandlePost(accessToken, groupId, values)
   }
-  render () {
-    const {messages, groupId} = this.props
+  render() {
+    const { messages, groupId } = this.props
     return (
-      <NewPost
-        messages={messages}
-        groupId={groupId}
-        onSubmit={this.submit}/>
+      <NewPost messages={messages} groupId={groupId} onSubmit={this.submit} />
     )
   }
 }
 
-function mapStateToProps ({users, groups, intl}) {
+function mapStateToProps({ users, groups, intl }) {
   return {
     isFetching: groups.get('isFetching'),
     authedUID: users.get('uid'),
     accessToken: users.get('accessToken'),
     messages: {
-      newQuestion: intl.messages.newQuestion,
+      newQuestion: intl.messages['newPost.newQuestion'],
     },
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...postsActionCreators,
-    }, dispatch)
+    },
+    dispatch
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPostContainer)

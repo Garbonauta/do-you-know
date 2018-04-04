@@ -10,6 +10,7 @@ class PostContainer extends Component {
     post: PropTypes.object.isRequired,
     accessToken: PropTypes.string.isRequired,
     handleDeletePost: PropTypes.func.isRequired,
+    messages: PropTypes.object.isRequired,
   }
   state = {
     actionMenuVisible: false,
@@ -39,22 +40,27 @@ class PostContainer extends Component {
     }
   }
   render() {
-    const { post } = this.props
+    const { post, messages } = this.props
     return (
       <Post
         actionOpen={this.state.actionMenuVisible}
         actionClick={this.handleClickAction}
         actionClose={this.handleCloseAction}
         deleteAction={this.delete}
+        messages={messages}
         post={post}
       />
     )
   }
 }
 
-function mapStateToProps({ users }) {
+function mapStateToProps({ users, intl: { messages } }) {
   return {
     accessToken: users.get('accessToken'),
+    messages: {
+      'postMenu.delete': messages['postMenu.delete'],
+      'postMenu.edit': messages['postMenu.edit'],
+    },
   }
 }
 

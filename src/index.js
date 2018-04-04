@@ -27,16 +27,13 @@ const initialState = {
 }
 
 const store = createStore(
-  combineReducers(
-    { ...reducers,
-      routing: routerReducer,
-      intl: intlReducer,
-    },
-  ),
+  combineReducers({
+    ...reducers,
+    routing: routerReducer,
+    intl: intlReducer,
+  }),
   initialState,
-  composeEnhancers(
-    applyMiddleware(thunk, routerMiddleware(history))
-  ),
+  composeEnhancers(applyMiddleware(thunk, routerMiddleware(history)))
 )
 
 ReactDOM.render(
