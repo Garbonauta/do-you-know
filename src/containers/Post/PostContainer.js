@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as groupPostsActionCreators from 'redux/modules/posts'
+import * as dialogActionCreators from 'redux/modules/dialog'
 import { Post } from 'components'
 
 class PostContainer extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired,
-    accessToken: PropTypes.string.isRequired,
-    handleDeletePost: PropTypes.func.isRequired,
+    handleOpenDialog: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
   }
   state = {
@@ -26,18 +25,8 @@ class PostContainer extends Component {
     })
   }
   delete = async () => {
-    const {
-      accessToken,
-      post: { groupId, postId },
-      handleDeletePost,
-    } = this.props
-    try {
-      await handleDeletePost(accessToken, groupId, postId)
-    } catch (error) {
-      this.setState({
-        error,
-      })
-    }
+    const { post: { groupId, postId }, handleOpenDialog } = this.props
+    handleOpenDialog('DELETE_POST', { groupId, postId })
   }
   render() {
     const { post, messages } = this.props
@@ -56,7 +45,6 @@ class PostContainer extends Component {
 
 function mapStateToProps({ users, intl: { messages } }) {
   return {
-    accessToken: users.get('accessToken'),
     messages: {
       'postMenu.delete': messages['postMenu.delete'],
       'postMenu.edit': messages['postMenu.edit'],
@@ -67,7 +55,7 @@ function mapStateToProps({ users, intl: { messages } }) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      ...groupPostsActionCreators,
+      ...dialogActionCreators,
     },
     dispatch
   )

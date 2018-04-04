@@ -4,26 +4,40 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { LoginContainer, CallbackContainer, GroupContainer, HomeContainer,
-  NavigationContainer } from 'containers'
+import {
+  CallbackContainer,
+  DialogContainer,
+  GroupContainer,
+  HomeContainer,
+  LoginContainer,
+  NavigationContainer,
+} from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
 import { withStyles } from 'material-ui/styles'
-import { AllContent, ContentContainer, styles } from './Styles'
+import { AllContent, ContentContainer, ContentArea, styles } from './Styles'
 import { Global } from 'sharedStyles'
 
-const PrivateRoute = ({component: Component, isAuthed, isFetching, ...rest}) => (
-  <Route {...rest} render={props => {
-    if (isFetching) {
-      return null
-    }
+const PrivateRoute = ({
+  component: Component,
+  isAuthed,
+  isFetching,
+  ...rest
+}) => (
+  <Route
+    {...rest}
+    render={props => {
+      if (isFetching) {
+        return null
+      }
 
-    const pathName = props.location.pathname
-    if (pathName === '/' && isAuthed) {
-      return <Redirect to='/home' />
-    }
-    return <Component {...props}/>
-  }}/>
+      const pathName = props.location.pathname
+      if (pathName === '/' && isAuthed) {
+        return <Redirect to="/home" />
+      }
+      return <Component {...props} />
+    }}
+  />
 )
 PrivateRoute.propTypes = {
   isFetching: PropTypes.bool.isRequired,
@@ -45,9 +59,13 @@ class App extends Component {
   state = {
     drawerOpen: true,
   }
-  async componentDidMount () {
+  async componentDidMount() {
     const pathname = window.location.pathname
-    if (pathname && (pathname !== '/callback') && localStorage.getItem('access_token')) {
+    if (
+      pathname &&
+      pathname !== '/callback' &&
+      localStorage.getItem('access_token')
+    ) {
       try {
         await this.props.handleAuthedUserFromBrowserCache()
       } catch (error) {
@@ -55,53 +73,68 @@ class App extends Component {
       }
     }
   }
-  handleDrawerToggle = () => this.setState({drawerOpen: !this.state.drawerOpen})
+  handleDrawerToggle = () =>
+    this.setState({ drawerOpen: !this.state.drawerOpen })
 
-  render () {
-    const {history, isAuthed, userFetching, classes: {content, toolbar}} = this.props
+  render() {
+    const {
+      history,
+      isAuthed,
+      userFetching,
+      classes: { content, toolbar },
+    } = this.props
 
     return (
       <ConnectedRouter history={history}>
         <AllContent>
+          <DialogContainer />
           <NavigationContainer
             authed={isAuthed}
             drawerToggle={this.handleDrawerToggle}
-            drawerOpen={this.state.drawerOpen} />
-          <div>
-            <div className={toolbar}/>
-            <ContentContainer open={this.state.drawerOpen && isAuthed} className={content}>
+            drawerOpen={this.state.drawerOpen}
+          />
+          <ContentArea>
+            <div className={toolbar} />
+            <ContentContainer
+              open={this.state.drawerOpen && isAuthed}
+              className={content}
+            >
               <Switch>
                 <PrivateRoute
                   exact={true}
-                  path='/'
+                  path="/"
                   isAuthed={isAuthed}
                   isFetching={userFetching}
-                  component={LoginContainer}/>
+                  component={LoginContainer}
+                />
                 <PrivateRoute
-                  path='/home'
+                  path="/home"
                   isAuthed={isAuthed}
                   isFetching={userFetching}
-                  component={HomeContainer}/>
+                  component={HomeContainer}
+                />
                 <PrivateRoute
-                  path='/group/:groupId'
+                  path="/group/:groupId"
                   isFetching={userFetching}
                   isAuthed={isAuthed}
-                  component={GroupContainer}/>
+                  component={GroupContainer}
+                />
                 <Route
-                  path='/callback'
+                  path="/callback"
                   isAuthed={isAuthed}
                   isFetching={userFetching}
-                  component={CallbackContainer}/>
+                  component={CallbackContainer}
+                />
               </Switch>
             </ContentContainer>
-          </div>
+          </ContentArea>
         </AllContent>
       </ConnectedRouter>
     )
   }
 }
 
-function mapStateToProps ({users, friends}, props) {
+function mapStateToProps({ users, friends }, props) {
   return {
     history: props.history,
     isAuthed: users.get('isAuthed'),
@@ -109,12 +142,16 @@ function mapStateToProps ({users, friends}, props) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...usersActionCreators,
       ...routeActionCreators,
-    }, dispatch)
+    },
+    dispatch
+  )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App))
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(App)
+)

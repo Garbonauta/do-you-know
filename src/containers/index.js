@@ -1,5 +1,6 @@
 export { default as App } from './App/App'
 export { default as CallbackContainer } from './Callback/CallbackContainer'
+export { default as DialogContainer } from './Dialog/DialogContainer'
 export { default as GroupContainer } from './Group/GroupContainer'
 export { default as HomeContainer } from './Home/HomeContainer'
 export { default as LoginContainer } from './Login/LoginContainer'
