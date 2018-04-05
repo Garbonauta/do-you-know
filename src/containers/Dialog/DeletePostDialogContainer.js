@@ -6,11 +6,11 @@ import * as dialogActionCreators from 'redux/modules/dialog'
 import * as postsActionCreators from 'redux/modules/posts'
 import { DeletePostDialog } from 'components'
 
-class PostDialogContainer extends Component {
+class DeletePostDialogContainer extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
-    groupId: PropTypes.string.isRequired,
-    postId: PropTypes.string.isRequired,
+    groupId: PropTypes.number.isRequired,
+    postId: PropTypes.number.isRequired,
     accessToken: PropTypes.string.isRequired,
     messages: PropTypes.object.isRequired,
     handleDeletePost: PropTypes.func.isRequired,
@@ -69,4 +69,6 @@ function mapDispatchToProps(dispatch) {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostDialogContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  DeletePostDialogContainer
+)

@@ -118,7 +118,7 @@ function Post({
 }
 Post.propTypes = {
   post: PropTypes.shape({
-    postId: PropTypes.string.isRequired,
+    postId: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     createdAt: PropTypes.number.isRequired,
     owner: PropTypes.shape({

@@ -18,7 +18,7 @@ class PostListContainer extends Component {
   static propTypes = {
     isFetching: PropTypes.bool.isRequired,
     accessToken: PropTypes.string.isRequired,
-    groupId: PropTypes.string.isRequired,
+    groupId: PropTypes.number.isRequired,
     posts: PropTypes.array.isRequired,
     messages: PropTypes.object.isRequired,
     fetchAndHandleGroupPosts: PropTypes.func.isRequired,

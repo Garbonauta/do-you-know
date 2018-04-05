@@ -127,8 +127,6 @@ export function fetchAndHandleGroupPosts(accessToken, groupId, clear) {
 }
 
 const initialPostState = Map({
-  groupId: '',
-  postId: '',
   text: '',
   owner: {},
 })
@@ -187,7 +185,7 @@ export default function posts(state = initialState, action) {
         error: action.error,
       })
     case DELETE_POST:
-      return state.delete(action.postId)
+      return state.delete(action.postId.toString())
     default:
       return state.merge({
         error: action.error,

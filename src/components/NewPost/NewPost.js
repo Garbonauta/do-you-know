@@ -81,7 +81,7 @@ NewPost.propTypes = {
   messages: PropTypes.shape({
     newQuestion: PropTypes.string.isRequired,
   }),
-  groupId: PropTypes.string.isRequired,
+  groupId: PropTypes.number.isRequired,
   onSubmit: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 }

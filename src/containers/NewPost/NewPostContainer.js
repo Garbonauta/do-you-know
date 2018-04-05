@@ -7,7 +7,7 @@ import { NewPost } from 'components'
 
 class NewPostContainer extends Component {
   static propTypes = {
-    groupId: PropTypes.string.isRequired,
+    groupId: PropTypes.number.isRequired,
     accessToken: PropTypes.string.isRequired,
     authedUID: PropTypes.string.isRequired,
     messages: PropTypes.object.isRequired,
