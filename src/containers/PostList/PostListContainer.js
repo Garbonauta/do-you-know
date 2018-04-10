@@ -28,12 +28,12 @@ class PostListContainer extends Component {
   }
   componentDidMount() {
     const { accessToken, fetchAndHandleGroupPosts, groupId } = this.props
-    fetchAndHandleGroupPosts(accessToken, groupId, false)
+    fetchAndHandleGroupPosts({ accessToken, groupId })
   }
   componentDidUpdate({ groupId }) {
     if (this.props.groupId !== groupId) {
       const { accessToken, fetchAndHandleGroupPosts, groupId } = this.props
-      fetchAndHandleGroupPosts(accessToken, groupId, true)
+      fetchAndHandleGroupPosts({ accessToken, groupId, clear: true })
     }
   }
   render() {

@@ -113,12 +113,17 @@ export function handleDeletePost(accessToken, groupId, postId) {
   }
 }
 
-export function fetchAndHandleGroupPosts(accessToken, groupId, clear) {
+export function fetchAndHandleGroupPosts({
+  accessToken,
+  groupId,
+  clear,
+  postId,
+}) {
   return async function(dispatch) {
     try {
       dispatch(fetchingPosts())
       clear && dispatch(clearPosts())
-      const posts = await getGroupPosts(accessToken, groupId)
+      const posts = await getGroupPosts(accessToken, groupId, postId)
       dispatch(fetchingBulkPostSuccess(formatPostsPayload(posts)))
     } catch (error) {
       dispatch(fetchingPostsError(error))

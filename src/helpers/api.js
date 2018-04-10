@@ -52,8 +52,9 @@ export function getGroups(accessToken, groups) {
   return getQuery(accessToken, url)
 }
 
-export function getGroupPosts(accessToken, groupId) {
-  return getQuery(accessToken, `${server}/groups/${groupId}/posts`)
+export function getGroupPosts(accessToken, groupId, postId) {
+  const query = postId ? `?lastId=${postId}` : ''
+  return getQuery(accessToken, `${server}/groups/${groupId}/posts${query}`)
 }
 
 export function postGroupPost(accessToken, groupId, post) {
