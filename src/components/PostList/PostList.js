@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Observer from 'react-intersection-observer'
 import { withStyles } from 'material-ui/styles'
 import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
@@ -13,14 +14,11 @@ function PostList({
   posts,
   messages: { firstQuestion },
   classes: { root, progress },
+  viewChangeAction,
+  getNext,
 }) {
   return (
     <div>
-      {isFetching && (
-        <Paper className={root}>
-          <CircularProgress className={progress} color="primary" />
-        </Paper>
-      )}
       {!isFetching &&
         posts.length === 0 && (
           <EmptyWarn className={root}>
@@ -29,8 +27,18 @@ function PostList({
             </Typography>
           </EmptyWarn>
         )}
-      {!isFetching &&
-        posts.map(post => <PostContainer key={post.postId} post={post} />)}
+      {posts.length > 0 && (
+        <div>
+          {posts.map(post => <PostContainer key={post.postId} post={post} />)}
+          {!isFetching &&
+            getNext && <Observer threshold={0.9} onChange={viewChangeAction} />}
+          {isFetching && (
+            <Paper className={root}>
+              <CircularProgress className={progress} color="primary" />
+            </Paper>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -41,6 +49,8 @@ PostList.propTypes = {
   messages: PropTypes.shape({
     firstQuestion: PropTypes.string.isRequired,
   }).isRequired,
+  getNext: PropTypes.bool.isRequired,
+  viewChangeAction: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import 'intersection-observer'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
 import { createBrowserHistory } from 'history'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
@@ -13,6 +14,24 @@ import { App } from 'containers'
 import messages from 'data/messages/es'
 import { MuiThemeProvider } from 'material-ui/styles'
 import theme from 'sharedStyles/theme'
+
+function loadPolyfills() {
+  const polyfills = []
+
+  if (!supportsIntersectionObserver()) {
+    polyfills.push(import('intersection-observer'))
+  }
+
+  return Promise.all(polyfills)
+}
+
+function supportsIntersectionObserver() {
+  return (
+    'IntersectionObserver' in global &&
+    'IntersectionObserverEntry' in global &&
+    'intersectionRatio' in IntersectionObserverEntry.prototype
+  )
+}
 
 const composeEnhancers = composeWithDevTools({})
 
@@ -35,12 +54,13 @@ const store = createStore(
   initialState,
   composeEnhancers(applyMiddleware(thunk, routerMiddleware(history)))
 )
-
-ReactDOM.render(
-  <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <App history={history} />
-    </MuiThemeProvider>
-  </Provider>,
-  document.getElementById('app')
+loadPolyfills().then(
+  ReactDOM.render(
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <App history={history} />
+      </MuiThemeProvider>
+    </Provider>,
+    document.getElementById('app')
+  )
 )

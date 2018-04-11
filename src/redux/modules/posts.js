@@ -124,7 +124,7 @@ export function fetchAndHandleGroupPosts({
       dispatch(fetchingPosts())
       clear && dispatch(clearPosts())
       const posts = await getGroupPosts(accessToken, groupId, postId)
-      dispatch(fetchingBulkPostSuccess(formatPostsPayload(posts)))
+      return dispatch(fetchingBulkPostSuccess(formatPostsPayload(posts)))
     } catch (error) {
       dispatch(fetchingPostsError(error))
     }
