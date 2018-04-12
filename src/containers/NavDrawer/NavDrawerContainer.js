@@ -30,25 +30,22 @@ class NavDrawerContainer extends Component {
   state = {
     groups: null,
   }
-  componentDidMount() {
-    const groupsObj = formatGroups(this.props.groups, this.props.usersGroup)
-    this.setState({
-      groups: Object.values(groupsObj),
-    })
-  }
   shouldComponentUpdate(nextProps, nextState) {
     return (
       this.state.groups !== nextState.groups ||
-      this.props.favoriteGroup !== nextProps.favoriteGroup
+      this.props.favoriteGroup !== nextProps.favoriteGroup ||
+      this.props.open !== nextProps.open
     )
   }
   static getDerivedStateFromProps = (nextProps, prevState) => {
-    if (prevState.groups !== nextProps.groups) {
+    if (prevState.origGroups !== nextProps.groups) {
       const groupsObj = formatGroups(nextProps.groups, nextProps.usersGroups)
       return {
         groups: Object.values(groupsObj),
+        origGroups: nextProps.groups,
       }
     }
+    return null
   }
 
   render() {
