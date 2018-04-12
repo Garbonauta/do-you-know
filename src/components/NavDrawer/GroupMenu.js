@@ -7,6 +7,7 @@ class GroupMenuItem extends PureComponent {
   static propTypes = {
     group: PropTypes.object.isRequired,
     changeRoute: PropTypes.func.isRequired,
+    pathName: PropTypes.string.isRequired,
   }
   handleClick = e => {
     e.preventDefault()
@@ -15,7 +16,11 @@ class GroupMenuItem extends PureComponent {
   render() {
     const { id, name } = this.props.group
     return (
-      <MenuItem key={id} onClick={this.handleClick}>
+      <MenuItem
+        key={id}
+        onClick={this.handleClick}
+        selected={this.props.pathName === `/group/${id}`}
+      >
         <ListItemText inset={true} primary={name} />
       </MenuItem>
     )
@@ -26,6 +31,7 @@ export default function GroupMenu({
   groups,
   selected,
   subheader,
+  pathName,
   changeRoute,
 }) {
   return (
@@ -35,6 +41,7 @@ export default function GroupMenu({
           <GroupMenuItem
             key={group.id}
             group={group}
+            pathName={pathName}
             changeRoute={changeRoute}
           />
         )

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -14,7 +14,7 @@ function formatGroups(groups, usersGroups) {
     .toJS()
 }
 
-class NavDrawerContainer extends Component {
+class NavDrawerContainer extends PureComponent {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
@@ -29,13 +29,6 @@ class NavDrawerContainer extends Component {
   }
   state = {
     groups: null,
-  }
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.state.groups !== nextState.groups ||
-      this.props.favoriteGroup !== nextProps.favoriteGroup ||
-      this.props.open !== nextProps.open
-    )
   }
   static getDerivedStateFromProps = (nextProps, prevState) => {
     if (prevState.origGroups !== nextProps.groups) {
