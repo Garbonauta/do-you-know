@@ -85,14 +85,26 @@ PostMenu.propTypes = {
   }).isRequired,
 }
 
+function getActions(
+  { owner, actionOpen, actionClick, actionClose, deleteAction },
+  messages
+) {
+  return owner ? (
+    <PostMenu
+      open={actionOpen}
+      onClick={actionClick}
+      handleClose={actionClose}
+      deleteAction={deleteAction}
+      messages={messages}
+    />
+  ) : null
+}
+
 function Post({
-  actionOpen,
-  actionClick,
-  actionClose,
-  deleteAction,
   post: { postId, text, createdAt, owner: { fullName, link, small } },
   messages,
   classes: { root },
+  ...postMenuProps
 }) {
   return (
     <Card className={root}>
@@ -100,15 +112,7 @@ function Post({
         avatar={<Avatar src={small} />}
         title={fullName}
         subheader={<FormatDateString date={createdAt} />}
-        action={
-          <PostMenu
-            open={actionOpen}
-            onClick={actionClick}
-            handleClose={actionClose}
-            deleteAction={deleteAction}
-            messages={messages}
-          />
-        }
+        action={getActions(postMenuProps, messages)}
       />
       <CardContent>
         <Typography variant="body1">{text}</Typography>
@@ -127,10 +131,11 @@ Post.propTypes = {
       small: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  actionOpen: PropTypes.bool.isRequired,
-  actionClick: PropTypes.func.isRequired,
-  actionClose: PropTypes.func.isRequired,
-  deleteAction: PropTypes.func.isRequired,
+  owner: PropTypes.bool.isRequired,
+  actionOpen: PropTypes.bool,
+  actionClick: PropTypes.func,
+  actionClose: PropTypes.func,
+  deleteAction: PropTypes.func,
   messages: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 }

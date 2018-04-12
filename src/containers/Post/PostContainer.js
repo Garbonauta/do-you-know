@@ -7,6 +7,7 @@ import { Post } from 'components'
 
 class PostContainer extends Component {
   static propTypes = {
+    uid: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     handleOpenDialog: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
@@ -29,9 +30,10 @@ class PostContainer extends Component {
     handleOpenDialog('DELETE_POST', { groupId, postId })
   }
   render() {
-    const { post, messages } = this.props
-    return (
+    const { post, messages, uid } = this.props
+    return post.owner.userId === uid ? (
       <Post
+        owner={true}
         actionOpen={this.state.actionMenuVisible}
         actionClick={this.handleClickAction}
         actionClose={this.handleCloseAction}
@@ -39,12 +41,15 @@ class PostContainer extends Component {
         messages={messages}
         post={post}
       />
+    ) : (
+      <Post owner={false} messages={messages} post={post} />
     )
   }
 }
 
 function mapStateToProps({ users, intl: { messages } }) {
   return {
+    uid: users.get('uid'),
     messages: {
       'postMenu.delete': messages['postMenu.delete'],
       'postMenu.edit': messages['postMenu.edit'],
