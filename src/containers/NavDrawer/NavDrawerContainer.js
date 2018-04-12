@@ -6,13 +6,22 @@ import { Map } from 'immutable'
 import { NavDrawer } from 'components'
 import * as routeActionCreators from 'redux/modules/route'
 
+function formatGroups(groups, usersGroups) {
+  return groups
+    .filter(group => {
+      return Map.isMap(group) && usersGroups.contains(group.get('id'))
+    })
+    .toJS()
+}
+
 class NavDrawerContainer extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
     uid: PropTypes.string.isRequired,
     accessToken: PropTypes.string.isRequired,
-    groups: PropTypes.object,
+    groups: PropTypes.object.isRequired,
+    usersGroups: PropTypes.object.isRequired,
     favoriteGroup: PropTypes.string,
     messages: PropTypes.object.isRequired,
     changeRoute: PropTypes.func.isRequired,
@@ -22,17 +31,26 @@ class NavDrawerContainer extends Component {
     groups: null,
   }
   componentDidMount() {
+    const groupsObj = formatGroups(this.props.groups, this.props.usersGroup)
     this.setState({
-      groups: Object.values(this.props.groups),
+      groups: Object.values(groupsObj),
     })
   }
-  static getDerivedStateFromProps(nextProps, prevState) {
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      this.state.groups !== nextState.groups ||
+      this.props.favoriteGroup !== nextProps.favoriteGroup
+    )
+  }
+  static getDerivedStateFromProps = (nextProps, prevState) => {
     if (prevState.groups !== nextProps.groups) {
+      const groupsObj = formatGroups(nextProps.groups, nextProps.usersGroups)
       return {
-        groups: Object.values(nextProps.groups),
+        groups: Object.values(groupsObj),
       }
     }
   }
+
   render() {
     const {
       open,
@@ -62,18 +80,8 @@ function mapStateToProps({ users, intl, groups, routing }) {
     isFetching: groups.get('isFetching'),
     uid,
     accessToken: users.get('accessToken'),
-    groups:
-      groups
-        .filter(group => {
-          return (
-            Map.isMap(group) &&
-            users
-              .get(uid)
-              .get('userGroups')
-              .contains(group.get('id'))
-          )
-        })
-        .toJS() || {},
+    groups: groups || {},
+    usersGroups: uid ? users.get(uid).get('userGroups') : {},
     favoriteGroup: users.get(uid) ? users.get(uid).get('favoriteGroup') : '',
     messages: {
       loading: intl.messages.loading,
