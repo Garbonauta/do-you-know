@@ -18,35 +18,62 @@ class NavDrawerContainer extends Component {
     changeRoute: PropTypes.func.isRequired,
     pathName: PropTypes.string.isRequired,
   }
-  handleGroupClick = (e, id) => {
-    e.preventDefault()
-    this.props.changeRoute(`/group/${id}`)
+  state = {
+    groups: null,
   }
-
-  render () {
-    const {open, groups, favoriteGroup, isFetching, messages, pathName} = this.props
+  componentDidMount() {
+    this.setState({
+      groups: Object.values(this.props.groups),
+    })
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.groups !== nextProps.groups) {
+      return {
+        groups: Object.values(nextProps.groups),
+      }
+    }
+  }
+  render() {
+    const {
+      open,
+      favoriteGroup,
+      isFetching,
+      messages,
+      pathName,
+      changeRoute,
+    } = this.props
     return (
       <NavDrawer
         open={open}
         isFetching={isFetching}
-        groups={groups}
+        groups={this.state.groups}
         favoriteGroup={favoriteGroup}
-        groupAction={this.handleGroupClick}
         messages={messages}
-        pathName={pathName}/>
+        pathName={pathName}
+        changeRoute={changeRoute}
+      />
     )
   }
 }
 
-function mapStateToProps ({users, intl, groups, routing}) {
+function mapStateToProps({ users, intl, groups, routing }) {
   const uid = users.get('uid')
   return {
     isFetching: groups.get('isFetching'),
     uid,
     accessToken: users.get('accessToken'),
-    groups: groups.filter(group => {
-      return Map.isMap(group) && users.get(uid).get('userGroups').contains(group.get('id'))
-    }).toJS() || {},
+    groups:
+      groups
+        .filter(group => {
+          return (
+            Map.isMap(group) &&
+            users
+              .get(uid)
+              .get('userGroups')
+              .contains(group.get('id'))
+          )
+        })
+        .toJS() || {},
     favoriteGroup: users.get(uid) ? users.get(uid).get('favoriteGroup') : '',
     messages: {
       loading: intl.messages.loading,
@@ -56,11 +83,13 @@ function mapStateToProps ({users, intl, groups, routing}) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...routeActionCreators,
-    }, dispatch)
+    },
+    dispatch
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavDrawerContainer)
