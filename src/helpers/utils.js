@@ -27,14 +27,37 @@ export function friendsObjectFromArray(friendsArray) {
   )
 }
 
-export function groupsObjectFromArray(groupsArray) {
-  return groupsArray.reduce((accum, { _id, ...groupInfo }) => {
-    accum[_id] = {
-      id: _id,
-      ...groupInfo,
-    }
-    return accum
-  }, {})
+export function groupsObjectFromArray(uid, groupsArray) {
+  return groupsArray.reduce(
+    (
+      accum,
+      { _id, name, pictureUrl, owner: { _id: ownerId, info }, moderators }
+    ) => {
+      let isModerator = false
+      let moderatorsClean = moderators.map(({ _id: userId, info }) => {
+        if (userId === uid) {
+          isModerator = true
+        }
+        return {
+          userId,
+          ...info,
+        }
+      })
+      accum[_id] = {
+        id: _id,
+        name,
+        isOwner: ownerId === uid,
+        isModerator,
+        owner: {
+          userId: ownerId,
+          ...info,
+        },
+        moderators: moderatorsClean,
+      }
+      return accum
+    },
+    {}
+  )
 }
 
 export function formatPostsPayload(posts) {

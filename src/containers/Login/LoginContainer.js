@@ -16,26 +16,28 @@ class LoginContainer extends Component {
     this.props.loginUser()
   }
 
-  render () {
-    const {isFetching, error} = this.props
+  render() {
+    const { isFetching, error } = this.props
     return (
-      <Login onAuth={this.handleAuth} isFetching={isFetching} error={error}/>
+      <Login onAuth={this.handleAuth} isFetching={isFetching} error={error} />
     )
   }
 }
 
-function mapStateToProps ({users}) {
+function mapStateToProps({ users }) {
   return {
     isFetching: users.get('isFetching'),
     error: users.get('error'),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...userActionCreators,
-    }, dispatch)
+    },
+    dispatch
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)

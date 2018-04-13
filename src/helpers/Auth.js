@@ -11,11 +11,11 @@ export default class Auth {
     scope: 'openid',
   })
 
-  login () {
+  login() {
     this.auth0.authorize()
   }
 
-  handleAuthentication () {
+  handleAuthentication() {
     return new Promise((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {
@@ -30,24 +30,24 @@ export default class Auth {
     })
   }
 
-  setSession (authResult) {
+  setSession(authResult) {
     localStorage.setItem('access_token', authResult.accessToken)
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', JSON.stringify(authResult.expiresAt))
   }
 
-  logout () {
+  logout() {
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
   }
 
-  isAuthenticated () {
+  isAuthenticated() {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'))
     return expiresAt ? new Date().getTime() < expiresAt : false
   }
 
-  getAuthenticated () {
+  getAuthenticated() {
     const accessToken = localStorage.getItem('access_token')
     const idToken = localStorage.getItem('id_token')
     const expiresAt = localStorage.getItem('expires_at')

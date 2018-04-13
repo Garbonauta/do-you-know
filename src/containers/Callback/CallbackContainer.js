@@ -14,7 +14,7 @@ class CallbackContainer extends Component {
     changeRoute: PropTypes.func.isRequired,
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     try {
       await this.props.fetchAndHandleAuthedUser()
       this.props.changeRoute('/home')
@@ -23,15 +23,13 @@ class CallbackContainer extends Component {
     }
   }
 
-  render () {
-    const {isFetching, messages} = this.props
-    return (
-      <Callback isFetching={isFetching} messages={messages}/>
-    )
+  render() {
+    const { isFetching, messages } = this.props
+    return <Callback isFetching={isFetching} messages={messages} />
   }
 }
 
-function mapStateToProps ({users, intl}) {
+function mapStateToProps({ users, intl }) {
   return {
     isFetching: users.get('isFetching'),
     messages: {
@@ -40,12 +38,14 @@ function mapStateToProps ({users, intl}) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...userActionCreators,
       ...routeActionCreators,
-    }, dispatch)
+    },
+    dispatch
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CallbackContainer)

@@ -89,7 +89,7 @@ async function authAction(dispatch, { uid, accessToken, idToken, expiresAt }) {
       fetchingFriendsSuccess(friendsObjectFromArray(friends), friends.length)
     )
     dispatch(authUser({ uid, accessToken, idToken, expiresAt }))
-    return dispatch(handleAndFetchGroups(accessToken, groups))
+    return dispatch(handleAndFetchGroups(accessToken, uid, groups))
   } catch (error) {
     dispatch(authUserError(error))
     throw error

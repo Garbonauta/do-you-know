@@ -61,6 +61,6 @@ export function postGroupPost(accessToken, groupId, post) {
   return postQuery(accessToken, `${server}/groups/${groupId}/posts`, post)
 }
 
-export function deleteGroupPost(accessToken, groupId, postId) {
-  return deleteQuery(accessToken, `${server}/groups/${groupId}/posts/${postId}`)
+export function deletePost(accessToken, postId) {
+  return deleteQuery(accessToken, `${server}/post/${postId}`)
 }

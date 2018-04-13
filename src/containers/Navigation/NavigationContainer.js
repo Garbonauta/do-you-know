@@ -20,11 +20,11 @@ class NavigationContainer extends Component {
   state = {
     actionOpen: false,
   }
-  handleHome = (e) => {
+  handleHome = e => {
     e.preventDefault()
     this.props.changeRoute('/home')
   }
-  handleAvatarClick = (e) => {
+  handleAvatarClick = e => {
     e.preventDefault()
     this.setState({
       actionOpen: !this.state.actionOpen,
@@ -35,14 +35,20 @@ class NavigationContainer extends Component {
       actionOpen: false,
     })
   }
-  logOutAndRedirect = async (e) => {
+  logOutAndRedirect = async e => {
     e.preventDefault()
     await this.props.logOut()
     this.props.changeRoute('/')
   }
 
-  render () {
-    const {messages, pictureUrl, drawerOpen, drawerToggle, authed} = this.props
+  render() {
+    const {
+      messages,
+      pictureUrl,
+      drawerOpen,
+      drawerToggle,
+      authed,
+    } = this.props
 
     return (
       <div>
@@ -55,30 +61,39 @@ class NavigationContainer extends Component {
           avatarClick={this.handleAvatarClick}
           avatarRequestClose={this.handleAvatarRequestClose}
           handleHome={this.handleHome}
-          logout={this.logOutAndRedirect}/>
-        <NavDrawerContainer open={drawerOpen}/>
+          logout={this.logOutAndRedirect}
+        />
+        <NavDrawerContainer open={drawerOpen} />
       </div>
     )
   }
 }
 
-function mapStateToProps ({users, intl: {messages}}) {
+function mapStateToProps({ users, intl: { messages } }) {
   const uid = users.get('uid')
 
   return {
-    pictureUrl: uid ? users.get(uid).get('info').get('pictures').get('small') : '',
+    pictureUrl: uid
+      ? users
+          .get(uid)
+          .get('info')
+          .get('pictures')
+          .get('small')
+      : '',
     messages: {
       appName: messages.appName,
     },
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...userActionCreators,
       ...routeActionCreators,
-    }, dispatch)
+    },
+    dispatch
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationContainer)

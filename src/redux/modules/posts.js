@@ -1,5 +1,9 @@
 import { Map, List, fromJS } from 'immutable'
-import { getGroupPosts, postGroupPost, deleteGroupPost } from 'helpers/api'
+import {
+  getGroupPosts,
+  postGroupPost,
+  deletePost as apiDeletePost,
+} from 'helpers/api'
 import { formatPostsPayload } from 'helpers/utils'
 
 const FETCHING_POSTS = 'FETCHING_POSTS'
@@ -105,7 +109,7 @@ export function postAndHandlePost(accessToken, groupId, data) {
 export function handleDeletePost(accessToken, groupId, postId) {
   return async function(dispatch) {
     try {
-      await deleteGroupPost(accessToken, groupId, postId)
+      await apiDeletePost(accessToken, postId)
       dispatch(deletePost(postId))
     } catch (error) {
       dispatch(deletePostError(error))
