@@ -64,3 +64,7 @@ export function postGroupPost(accessToken, groupId, post) {
 export function deletePost(accessToken, postId) {
   return deleteQuery(accessToken, `${server}/post/${postId}`)
 }
+
+export function addComment(accessToken, comment) {
+  return postQuery(accessToken, `${server}/post/${comment.postId}`, comment)
+}

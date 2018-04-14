@@ -2,10 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import { FormattedTime, FormattedRelative } from 'react-intl'
-import { Manager, Target, Popper } from 'react-popper'
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener'
-import Grow from 'material-ui/transitions/Grow'
-import Paper from 'material-ui/Paper'
 import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
 import Card, {
@@ -14,10 +10,9 @@ import Card, {
   CardContent,
   CardActions,
 } from 'material-ui/Card'
-import { MenuList, MenuItem } from 'material-ui/Menu'
-import IconButton from 'material-ui/IconButton'
-import MoreHorizIcon from 'material-ui-icons/MoreHoriz'
+import { getActions } from './PostMenu'
 import { styles } from './Styles'
+import { NewCommentContainer } from 'containers'
 
 function FormatDateString({ date }) {
   const DAY = 1000 * 60 * 60 * 24
@@ -43,79 +38,31 @@ FormatDateString.propTypes = {
   date: PropTypes.number.isRequired,
 }
 
-function PostMenu({ open, onClick, handleClose, deleteAction, messages }) {
-  return (
-    <div>
-      <Manager>
-        <Target>
-          <IconButton onClick={onClick}>
-            <MoreHorizIcon />
-          </IconButton>
-        </Target>
-        <Popper placement="bottom-end" eventsEnabled={open}>
-          <ClickAwayListener onClickAway={handleClose}>
-            <Grow
-              in={open}
-              id="post-list-grow"
-              style={{ transformOrigin: '0 0 0' }}
-            >
-              <Paper>
-                <MenuList role="menu">
-                  <MenuItem button={true} onClick={deleteAction}>
-                    {messages['postMenu.delete']}
-                  </MenuItem>
-                </MenuList>
-              </Paper>
-            </Grow>
-          </ClickAwayListener>
-        </Popper>
-      </Manager>
-    </div>
-  )
-}
-
-PostMenu.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  deleteAction: PropTypes.func.isRequired,
-  messages: PropTypes.shape({
-    'postMenu.delete': PropTypes.string.isRequired,
-    'postMenu.edit': PropTypes.string.isRequired,
-  }).isRequired,
-}
-
-function getActions(
-  { owner, actionOpen, actionClick, actionClose, deleteAction },
-  messages
-) {
-  return owner ? (
-    <PostMenu
-      open={actionOpen}
-      onClick={actionClick}
-      handleClose={actionClose}
-      deleteAction={deleteAction}
-      messages={messages}
-    />
-  ) : null
-}
-
 function Post({
-  post: { postId, text, createdAt, owner: { fullName, link, small } },
+  post: {
+    postId,
+    groupId,
+    text,
+    createdAt,
+    owner: { fullName, link, picture },
+  },
   messages,
-  classes: { root },
+  classes: { root, commentRoot },
   ...postMenuProps
 }) {
   return (
     <Card className={root}>
       <CardHeader
-        avatar={<Avatar src={small} />}
+        avatar={<Avatar src={picture} />}
         title={fullName}
         subheader={<FormatDateString date={createdAt} />}
         action={getActions(postMenuProps, messages)}
       />
       <CardContent>
-        <Typography variant="body1">{text}</Typography>
+        <Typography>{text}</Typography>
+      </CardContent>
+      <CardContent classes={{ root: commentRoot }}>
+        <NewCommentContainer postId={postId} groupId={groupId} />
       </CardContent>
     </Card>
   )
@@ -123,12 +70,13 @@ function Post({
 Post.propTypes = {
   post: PropTypes.shape({
     postId: PropTypes.number.isRequired,
+    groupId: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     createdAt: PropTypes.number.isRequired,
     owner: PropTypes.shape({
       fullName: PropTypes.string.isRequired,
       link: PropTypes.string.isRequired,
-      small: PropTypes.string.isRequired,
+      picture: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   owner: PropTypes.bool.isRequired,

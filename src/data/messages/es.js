@@ -15,5 +15,6 @@ const messages = {
   'postMenu.edit': 'Editar',
   'deleteDialog.title': 'Borrar Pregunta',
   'deleteDialog.description': '¿Querés borrar tu pregunta?',
+  'comment.placeholder': 'Deja tu comentario...',
 }
 export default messages

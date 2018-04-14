@@ -8,6 +8,9 @@ export { default as NavDrawerContainer } from './NavDrawer/NavDrawerContainer'
 export {
   default as NavigationContainer,
 } from './Navigation/NavigationContainer'
+export {
+  default as NewCommentContainer,
+} from './NewComment/NewCommentContainer'
 export { default as NewPostContainer } from './NewPost/NewPostContainer'
 export { default as PostContainer } from './Post/PostContainer'
 export { default as PostListContainer } from './PostList/PostListContainer'

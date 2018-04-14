@@ -5,6 +5,7 @@ import {
   deletePost as apiDeletePost,
 } from 'helpers/api'
 import { formatPostsPayload } from 'helpers/utils'
+import { SUBMIT_COMMENT, SUBMIT_COMMENT_ERROR } from './comments'
 
 const FETCHING_POSTS = 'FETCHING_POSTS'
 const FETCHING_POSTS_ERROR = 'FETCHING_POSTS_ERROR'
@@ -44,15 +45,12 @@ function clearPosts() {
   }
 }
 
-function addPost(groupId, { postId, text, createdAt, owner }) {
-  const createdDate = Date.parse(createdAt)
+function addPost({ createdAt, _id, ...postInfo }) {
   return {
     type: ADD_POST,
-    groupId,
-    postId,
-    text,
-    createdAt: createdDate,
-    owner,
+    postId: _id,
+    createdAt: new Date(createdAt).getTime(),
+    ...postInfo,
   }
 }
 
@@ -80,26 +78,10 @@ function deletePostError(error) {
 }
 
 export function postAndHandlePost(accessToken, groupId, data) {
-  return async function(dispatch, state) {
+  return async function(dispatch) {
     try {
       const post = await postGroupPost(accessToken, groupId, data)
-      const user = state()
-        .users.get(post.owner)
-        .get('info')
-        .toJS()
-      dispatch(
-        addPost(groupId, {
-          postId: post._id,
-          text: post.text,
-          createdAt: post.createdAt,
-          owner: {
-            userId: post.owner,
-            fullName: user.fullName,
-            link: user.link,
-            small: user.pictures.small,
-          },
-        })
-      )
+      dispatch(addPost(post))
     } catch (error) {
       dispatch(addPostError(error))
     }
@@ -136,8 +118,10 @@ export function fetchAndHandleGroupPosts({
 }
 
 const initialPostState = Map({
+  isFetching: false,
   text: '',
   owner: {},
+  comments: [],
 })
 
 function post(state = initialPostState, action) {
@@ -145,11 +129,17 @@ function post(state = initialPostState, action) {
     case ADD_POST:
       return state.merge({
         groupId: action.groupId,
+        groupName: action.groupName,
         postId: action.postId,
         text: action.text,
         createdAt: action.createdAt,
         owner: action.owner,
       })
+    case SUBMIT_COMMENT:
+      return state.merge({
+        comments: state.get('comments').push(action.comment),
+      })
+    case SUBMIT_COMMENT_ERROR:
     default:
       return state
   }
@@ -186,8 +176,10 @@ export default function posts(state = initialState, action) {
         error: state.get('error'),
       })
     case ADD_POST:
+    case SUBMIT_COMMENT:
+    case SUBMIT_COMMENT_ERROR:
       return state.merge({
-        [action.postId]: post(state.get(action.postId), action),
+        [action.postId]: post(state.get(action.postId.toString()), action),
       })
     case ADD_POST_ERROR:
       return state.merge({

@@ -29,9 +29,14 @@ function GroupSideBar({
         className={list}
         subheader={<Typography variant="caption">{moderatorMsg}</Typography>}
       >
-        {moderators.map(({ _id: id, fullName, link }) => {
+        {moderators.map(({ userId, fullName, link }) => {
           return (
-            <ListItem key={id} className={listItem} component="a" href={link}>
+            <ListItem
+              key={userId}
+              className={listItem}
+              component="a"
+              href={link}
+            >
               <ListItemText
                 classes={{ primary: listItemText }}
                 primary={fullName}
@@ -46,14 +51,14 @@ function GroupSideBar({
 
 GroupSideBar.propTypes = {
   owner: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
     fullName: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
   }),
   createdByMsg: PropTypes.string.isRequired,
   moderators: PropTypes.arrayOf(
     PropTypes.shape({
-      _id: PropTypes.string.isRequired,
+      userId: PropTypes.string.isRequired,
       info: PropTypes.shape({
         fullName: PropTypes.string.isRequired,
         link: PropTypes.string.isRequired,

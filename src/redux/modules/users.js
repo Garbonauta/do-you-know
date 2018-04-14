@@ -158,6 +158,7 @@ export function user(state = initialUserState, action) {
   switch (action.type) {
     case FETCHING_USER_SUCCESS:
       return state.merge({
+        userId: action.uid,
         lastUpdated: action.timestamp,
         info: action.user,
         favoriteGroup: action.favoriteGroup,

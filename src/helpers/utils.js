@@ -62,30 +62,28 @@ export function groupsObjectFromArray(uid, groupsArray) {
 
 export function formatPostsPayload(posts) {
   return posts.reduce(
-    (
-      accum,
-      {
-        _id: postId,
-        groupId,
-        text,
-        createdAt,
-        owner: { _id: userId, info: { fullName, link, pictures: { small } } },
-      }
-    ) => {
+    (accum, { _id: postId, groupName, groupId, text, createdAt, owner }) => {
       accum[postId] = {
         groupId,
+        groupName,
         postId,
         text,
         createdAt: Date.parse(createdAt),
-        owner: {
-          userId,
-          fullName,
-          link,
-          small,
-        },
+        comments: [],
+        owner,
       }
       return accum
     },
     {}
   )
+}
+
+export function formatSimpleUseFromStore(user) {
+  const { userId, info: { fullName, link, pictures: { small } } } = user.toJS()
+  return {
+    userId,
+    fullName,
+    link,
+    picture: small,
+  }
 }
