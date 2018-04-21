@@ -17,11 +17,10 @@ class NewPostContainer extends Component {
     postAndHandlePost: PropTypes.func.isRequired,
   }
   submit = (groupId, values) => {
-    const { groupName, accessToken, postAndHandlePost, authedUser } = this.props
-    const owner = formatSimpleUseFromStore(authedUser)
+    const { groupName, accessToken, postAndHandlePost, authedUID } = this.props
     values.groupId = groupId
     values.groupName = groupName
-    values.owner = owner
+    values.owner = authedUID
     values.createdAt = Date.now()
     return postAndHandlePost(accessToken, groupId, values)
   }

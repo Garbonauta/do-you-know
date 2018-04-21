@@ -6,6 +6,7 @@ import Input, { InputLabel } from 'material-ui/Input'
 import { CommentDiv, TextDiv, styles } from './Styles'
 
 function NewComment({
+  value,
   avatar,
   messages,
   handleChange,
@@ -25,6 +26,7 @@ function NewComment({
           classes={{ root: txtRoot }}
           onChange={handleChange}
           onKeyPress={keyPressAction}
+          value={value}
         />
       </TextDiv>
     </CommentDiv>
@@ -32,6 +34,7 @@ function NewComment({
 }
 
 NewComment.propTypes = {
+  value: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
   messages: PropTypes.shape({
     placeholder: PropTypes.string.isRequired,

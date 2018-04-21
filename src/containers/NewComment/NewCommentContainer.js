@@ -64,6 +64,7 @@ class NewCommentContainer extends Component {
       <NewComment
         avatar={avatar}
         messages={messages}
+        value={this.state.text}
         handleChange={this.handleChange}
         keyPressAction={this.handleEnter}
       />
