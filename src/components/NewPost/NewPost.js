@@ -14,23 +14,36 @@ import Button from 'material-ui/Button'
 import { PostDiv, ActionsDiv, Form, styles } from './Styles'
 
 function NewPost({
+  open,
   messages: { newQuestion },
   groupId,
+  initialFormValue,
+  toggleOpen,
+  closeAction,
   onSubmit,
   classes: { newPostContainer },
 }) {
   return (
     <PostDiv className={newPostContainer}>
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+      <ExpansionPanel expanded={open}>
+        <ExpansionPanelSummary
+          onClick={toggleOpen}
+          expandIcon={<ExpandMoreIcon />}
+        >
           <Typography variant="subheading">{newQuestion}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Formik
-            onSubmit={async (values, { setSubmitting, setErrors }) => {
+            initialValues={initialFormValue}
+            onSubmit={async (
+              values,
+              { setSubmitting, setErrors, resetForm }
+            ) => {
               try {
                 await onSubmit(groupId, values)
                 setSubmitting(false)
+                closeAction()
+                resetForm(initialFormValue)
               } catch (error) {
                 setSubmitting(false)
                 setErrors(error)
@@ -53,7 +66,7 @@ function NewPost({
                     name="postText"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.question}
+                    value={values.postText}
                   />
                 </FormControl>
                 <ActionsDiv>
@@ -78,10 +91,14 @@ function NewPost({
 }
 
 NewPost.propTypes = {
+  open: PropTypes.bool.isRequired,
   messages: PropTypes.shape({
     newQuestion: PropTypes.string.isRequired,
   }),
   groupId: PropTypes.number.isRequired,
+  initialFormValue: PropTypes.object.isRequired,
+  toggleOpen: PropTypes.func.isRequired,
+  closeAction: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 }

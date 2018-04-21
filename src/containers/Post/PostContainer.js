@@ -16,8 +16,10 @@ class PostContainer extends Component {
     actionMenuVisible: false,
   }
   handleClickAction = () => {
-    this.setState({
-      actionMenuVisible: !this.state.actionMenuVisible,
+    this.setState(prevState => {
+      return {
+        actionMenuVisible: !prevState.actionMenuVisible,
+      }
     })
   }
   handleCloseAction = () => {
@@ -26,7 +28,10 @@ class PostContainer extends Component {
     })
   }
   delete = async () => {
-    const { post: { groupId, postId }, handleOpenDialog } = this.props
+    const {
+      post: { groupId, postId },
+      handleOpenDialog,
+    } = this.props
     handleOpenDialog('DELETE_POST', { groupId, postId })
   }
   render() {

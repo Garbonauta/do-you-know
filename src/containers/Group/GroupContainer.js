@@ -25,8 +25,10 @@ class GroupContainer extends Component {
   }
   toggleSideBar = e => {
     e.preventDefault()
-    this.setState({
-      sideBarVisible: !this.state.sideBarVisible,
+    this.setState(prevState => {
+      return {
+        sideBarVisible: !prevState.sideBarVisible,
+      }
     })
   }
   render() {

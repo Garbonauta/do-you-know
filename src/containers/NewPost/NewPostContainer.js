@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as postsActionCreators from 'redux/modules/posts'
-import { formatSimpleUseFromStore } from 'helpers/utils'
 import { NewPost } from 'components'
 
 class NewPostContainer extends Component {
@@ -16,18 +15,43 @@ class NewPostContainer extends Component {
     messages: PropTypes.object.isRequired,
     postAndHandlePost: PropTypes.func.isRequired,
   }
+  state = {
+    open: false,
+  }
+  toggleOpen = () => {
+    this.setState(prevState => {
+      return {
+        open: !prevState.open,
+      }
+    })
+  }
+  close = () => {
+    return this.setState({
+      open: false,
+    })
+  }
   submit = (groupId, values) => {
     const { groupName, accessToken, postAndHandlePost, authedUID } = this.props
-    values.groupId = groupId
-    values.groupName = groupName
-    values.owner = authedUID
     values.createdAt = Date.now()
     return postAndHandlePost(accessToken, groupId, values)
   }
   render() {
-    const { messages, groupId } = this.props
+    const { messages, groupId, groupName, authedUID } = this.props
     return (
-      <NewPost messages={messages} groupId={groupId} onSubmit={this.submit} />
+      <NewPost
+        open={this.state.open}
+        messages={messages}
+        groupId={groupId}
+        toggleOpen={this.toggleOpen}
+        closeAction={this.close}
+        initialFormValue={{
+          groupId,
+          groupName,
+          owner: authedUID,
+          postText: '',
+        }}
+        onSubmit={this.submit}
+      />
     )
   }
 }

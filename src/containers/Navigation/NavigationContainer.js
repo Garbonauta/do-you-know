@@ -26,8 +26,10 @@ class NavigationContainer extends Component {
   }
   handleAvatarClick = e => {
     e.preventDefault()
-    this.setState({
-      actionOpen: !this.state.actionOpen,
+    this.setState(prevState => {
+      return {
+        actionOpen: !prevState.actionOpen,
+      }
     })
   }
   handleAvatarRequestClose = () => {

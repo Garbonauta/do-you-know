@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as commentsActionCreators from 'redux/modules/comments'
 import { NewComment } from 'components'
-import { formatSimpleUseFromStore } from 'helpers/utils'
 
 class NewCommentContainer extends Component {
   static propTypes = {
@@ -35,16 +34,14 @@ class NewCommentContainer extends Component {
         postId,
         groupId,
         authedUID,
-        authedUser,
         handleSubmitComment,
       } = this.props
-      const owner = formatSimpleUseFromStore(authedUser)
 
       const comment = {
         postId,
         groupId,
         text: e.target.value,
-        owner,
+        owner: authedUID,
         createdAt: Date.now(),
         score: 1,
         votes: { [authedUID]: '1' },
