@@ -32,12 +32,12 @@ function PostList({
           {posts.map(post => <PostContainer key={post.postId} post={post} />)}
           {!isFetching &&
             getNext && <Observer threshold={0.9} onChange={viewChangeAction} />}
-          {isFetching && (
-            <Paper className={root}>
-              <CircularProgress className={progress} color="primary" />
-            </Paper>
-          )}
         </div>
+      )}
+      {isFetching && (
+        <Paper className={root}>
+          <CircularProgress className={progress} color="primary" />
+        </Paper>
       )}
     </div>
   )
