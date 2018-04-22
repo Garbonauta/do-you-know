@@ -1,4 +1,7 @@
+import { Client } from 'nes/client'
+
 const server = process.env.REACT_APP_SERVER_URL
+const wsUrl = process.env.REACT_APP_WS_URL
 
 function getQuery(accessToken, url) {
   return fetch(url, {
@@ -39,6 +42,18 @@ async function deleteQuery(accessToken, url) {
     },
   })
   return response.status === 204 && response.ok
+}
+
+export async function listenNotifications({ accessToken, userId, handler }) {
+  try {
+    const client = new Client(wsUrl)
+    await client.connect({
+      auth: { headers: { authorization: `Bearer ${accessToken}` } },
+    })
+    client.subscribe(`/notifications/${userId}`, handler)
+  } catch (error) {
+    throw error
+  }
 }
 
 export function getAuthUserProfile(accessToken) {

@@ -44,7 +44,7 @@ function Post({
     groupId,
     text,
     createdAt,
-    owner: { fullName, link, picture },
+    owner: { fullName, link, picture, userId },
   },
   messages,
   classes: { root, commentRoot },
@@ -62,7 +62,11 @@ function Post({
         <Typography>{text}</Typography>
       </CardContent>
       <CardContent classes={{ root: commentRoot }}>
-        <NewCommentContainer postId={postId} groupId={groupId} />
+        <NewCommentContainer
+          postId={postId}
+          postOwner={userId}
+          groupId={groupId}
+        />
       </CardContent>
     </Card>
   )

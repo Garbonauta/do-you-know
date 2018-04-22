@@ -4,12 +4,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
+import * as notificationActionCreators from 'redux/modules/notifications'
 import { UserMenu } from 'components'
 
 class UserMenuContainer extends Component {
   static propTypes = {
     pictureUrl: PropTypes.string.isRequired,
     logOut: PropTypes.func.isRequired,
+    fetchAndHandleNotifications: PropTypes.func.isRequired,
     changeRoute: PropTypes.func.isRequired,
   }
   state = {
@@ -32,6 +34,9 @@ class UserMenuContainer extends Component {
     e.preventDefault()
     await this.props.logOut()
     this.props.changeRoute('/')
+  }
+  componentDidMount() {
+    this.props.fetchAndHandleNotifications()
   }
   render() {
     const { pictureUrl } = this.props
@@ -66,6 +71,7 @@ function mapDispatchToProps(dispatch) {
     {
       ...routeActionCreators,
       ...userActionCreators,
+      ...notificationActionCreators,
     },
     dispatch
   )

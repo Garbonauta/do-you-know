@@ -8,6 +8,7 @@ import { NewComment } from 'components'
 class NewCommentContainer extends Component {
   static propTypes = {
     postId: PropTypes.number.isRequired,
+    postOwner: PropTypes.string.isRequired,
     groupId: PropTypes.number.isRequired,
     accessToken: PropTypes.string.isRequired,
     authedUID: PropTypes.string.isRequired,
@@ -32,6 +33,7 @@ class NewCommentContainer extends Component {
       const {
         accessToken,
         postId,
+        postOwner,
         groupId,
         authedUID,
         handleSubmitComment,
@@ -39,6 +41,7 @@ class NewCommentContainer extends Component {
 
       const comment = {
         postId,
+        postOwner,
         groupId,
         text: e.target.value,
         owner: authedUID,
