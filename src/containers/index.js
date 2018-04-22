@@ -15,3 +15,4 @@ export {
 export { default as NewPostContainer } from './NewPost/NewPostContainer'
 export { default as PostContainer } from './Post/PostContainer'
 export { default as PostListContainer } from './PostList/PostListContainer'
+export { default as UserMenuContainer } from './UserMenu/UserMenuContainer'
