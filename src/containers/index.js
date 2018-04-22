@@ -4,6 +4,7 @@ export { default as DialogContainer } from './Dialog/DialogContainer'
 export { default as GroupContainer } from './Group/GroupContainer'
 export { default as HomeContainer } from './Home/HomeContainer'
 export { default as LoginContainer } from './Login/LoginContainer'
+export { default as NavBarContainer } from './NavBar/NavBarContainer'
 export { default as NavDrawerContainer } from './NavDrawer/NavDrawerContainer'
 export {
   default as NavigationContainer,

@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import {
   CallbackContainer,
-  DialogContainer,
   GroupContainer,
   HomeContainer,
   LoginContainer,
@@ -14,9 +13,6 @@ import {
 } from 'containers'
 import * as usersActionCreators from 'redux/modules/users'
 import * as routeActionCreators from 'redux/modules/route'
-import { withStyles } from 'material-ui/styles'
-import { AllContent, ContentContainer, ContentArea, styles } from './Styles'
-import { Global } from 'sharedStyles'
 
 const PrivateRoute = ({
   component: Component,
@@ -51,13 +47,8 @@ class App extends Component {
     history: PropTypes.object.isRequired,
     userFetching: PropTypes.bool.isRequired,
     isAuthed: PropTypes.bool.isRequired,
-    invalidAuth: PropTypes.func.isRequired,
     changeRoute: PropTypes.func.isRequired,
     handleAuthedUserFromBrowserCache: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired,
-  }
-  state = {
-    drawerOpen: true,
   }
   async componentDidMount() {
     const pathname = window.location.pathname
@@ -73,63 +64,42 @@ class App extends Component {
       }
     }
   }
-  handleDrawerToggle = () =>
-    this.setState({ drawerOpen: !this.state.drawerOpen })
 
   render() {
-    const {
-      history,
-      isAuthed,
-      userFetching,
-      classes: { content, toolbar },
-    } = this.props
+    const { history, isAuthed, userFetching } = this.props
 
     return (
-      <ConnectedRouter history={history}>
-        <AllContent>
-          <DialogContainer />
-          <NavigationContainer
-            authed={isAuthed}
-            drawerToggle={this.handleDrawerToggle}
-            drawerOpen={this.state.drawerOpen}
-          />
-          <ContentArea>
-            <div className={toolbar} />
-            <ContentContainer
-              open={this.state.drawerOpen && isAuthed}
-              className={content}
-            >
-              <Switch>
-                <PrivateRoute
-                  exact={true}
-                  path="/"
-                  isAuthed={isAuthed}
-                  isFetching={userFetching}
-                  component={LoginContainer}
-                />
-                <PrivateRoute
-                  path="/home"
-                  isAuthed={isAuthed}
-                  isFetching={userFetching}
-                  component={HomeContainer}
-                />
-                <PrivateRoute
-                  path="/group/:groupId"
-                  isFetching={userFetching}
-                  isAuthed={isAuthed}
-                  component={GroupContainer}
-                />
-                <Route
-                  path="/callback"
-                  isAuthed={isAuthed}
-                  isFetching={userFetching}
-                  component={CallbackContainer}
-                />
-              </Switch>
-            </ContentContainer>
-          </ContentArea>
-        </AllContent>
-      </ConnectedRouter>
+      <NavigationContainer isAuthed={isAuthed}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <PrivateRoute
+              exact={true}
+              path="/"
+              isAuthed={isAuthed}
+              isFetching={userFetching}
+              component={LoginContainer}
+            />
+            <PrivateRoute
+              path="/home"
+              isAuthed={isAuthed}
+              isFetching={userFetching}
+              component={HomeContainer}
+            />
+            <PrivateRoute
+              path="/group/:groupId"
+              isFetching={userFetching}
+              isAuthed={isAuthed}
+              component={GroupContainer}
+            />
+            <Route
+              path="/callback"
+              isAuthed={isAuthed}
+              isFetching={userFetching}
+              component={CallbackContainer}
+            />
+          </Switch>
+        </ConnectedRouter>
+      </NavigationContainer>
     )
   }
 }
@@ -152,6 +122,4 @@ function mapDispatchToProps(dispatch) {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(App)
-)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

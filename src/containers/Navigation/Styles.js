@@ -4,7 +4,6 @@ export const AllContent = styled.div`
   display: flex;
   height: 100%;
 `
-
 export const ContentArea = styled.div`
   width: 100%;
 `
