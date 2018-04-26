@@ -14,6 +14,10 @@ export const Content = styled.div`
   flex: 1;
 `
 
+export const Posts = styled.div`
+  max-width: 800px;
+`
+
 export const Header = styled.div`
   width: 100%;
 `

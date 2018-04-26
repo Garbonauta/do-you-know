@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FlexDiv } from './Styles'
 import { GroupSideBar, GroupHeader } from 'components'
 import { NewPostContainer, GroupPostListContainer } from 'containers'
-import { Body, Content } from './Styles'
+import { Body, Content, Posts } from './Styles'
 
 export default function Group({
   groupId,
@@ -21,8 +21,10 @@ export default function Group({
       />
       <Body>
         <Content>
-          <NewPostContainer groupId={groupId} />
-          <GroupPostListContainer groupId={groupId} />
+          <Posts>
+            <NewPostContainer groupId={groupId} />
+            <GroupPostListContainer groupId={groupId} />
+          </Posts>
         </Content>
         {sideBarVisible && (
           <GroupSideBar
