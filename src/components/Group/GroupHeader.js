@@ -7,15 +7,15 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore'
 import ExpandLessIcon from 'material-ui-icons/ExpandLess'
 import { Header, Title } from './Styles'
 
-export default function GroupHeader ({title, sideBarVisible, toggleSideBar}) {
+export default function GroupHeader({ title, sideBarVisible, toggleSideBar }) {
   return (
     <Header>
       <Toolbar disableGutters={true}>
         <Title>
-          <Typography variant='title'>{title}</Typography>
+          <Typography variant="title">{title}</Typography>
         </Title>
         <IconButton onClick={toggleSideBar}>
-          {sideBarVisible ? <ExpandMoreIcon/> : <ExpandLessIcon/>}
+          {sideBarVisible ? <ExpandMoreIcon /> : <ExpandLessIcon />}
         </IconButton>
       </Toolbar>
     </Header>

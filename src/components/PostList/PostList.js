@@ -10,7 +10,6 @@ import { EmptyWarn, styles } from './Styles'
 
 function PostList({
   isFetching,
-  groupId,
   posts,
   messages: { firstQuestion },
   classes: { root, progress },
@@ -44,7 +43,6 @@ function PostList({
 }
 PostList.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  groupId: PropTypes.number.isRequired,
   posts: PropTypes.array.isRequired,
   messages: PropTypes.shape({
     firstQuestion: PropTypes.string.isRequired,

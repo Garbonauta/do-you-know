@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { NewPostContainer, PostListContainer } from 'containers'
+import { NewPostContainer, GroupPostListContainer } from 'containers'
 import { Group, GroupContent, GroupSideBar, GroupHeader } from 'components'
 
 class GroupContainer extends Component {
   static propTypes = {
     isFetching: PropTypes.bool.isRequired,
+    accessToken: PropTypes.string.isRequired,
     groupId: PropTypes.number.isRequired,
     messages: PropTypes.shape({
       createdBy: PropTypes.string.isRequired,
@@ -40,38 +41,37 @@ class GroupContainer extends Component {
     } = this.props
     const { sideBarVisible } = this.state
     return (
-      <div>
-        {!isFetching && (
-          <Group>
-            <GroupHeader
-              title={name}
-              sideBarVisible={sideBarVisible}
-              toggleSideBar={this.toggleSideBar}
+      !isFetching && (
+        <Group>
+          <GroupHeader
+            title={name}
+            sideBarVisible={sideBarVisible}
+            toggleSideBar={this.toggleSideBar}
+          />
+          <GroupContent>
+            <NewPostContainer groupId={groupId} />
+            <GroupPostListContainer groupId={groupId} />
+          </GroupContent>
+          {sideBarVisible && (
+            <GroupSideBar
+              owner={owner}
+              createdByMsg={createdBy}
+              moderators={moderators}
+              moderatorMsg={moderatorMsg}
             />
-            <GroupContent>
-              <NewPostContainer groupId={groupId} />
-              <PostListContainer groupId={groupId} />
-            </GroupContent>
-            {sideBarVisible && (
-              <GroupSideBar
-                owner={owner}
-                createdByMsg={createdBy}
-                moderators={moderators}
-                moderatorMsg={moderatorMsg}
-              />
-            )}
-          </Group>
-        )}
-      </div>
+          )}
+        </Group>
+      )
     )
   }
 }
 
-function mapStateToProps({ groups, intl }, props) {
+function mapStateToProps({ users, groups, intl }, props) {
   const groupId = props.match.params.groupId
   const group = groups.get(groupId)
   return {
     isFetching: groups.get('isFetching'),
+    accessToken: users.get('accessToken'),
     groupId: parseInt(groupId),
     group: group ? group.toJS() : {},
     messages: {

@@ -7,7 +7,6 @@ export const FlexDiv = FlexDivShared.extend`
 
 export const Content = styled.div`
   flex: 1;
-  padding-right: 24px;
 `
 
 export const Header = styled.div`
@@ -19,6 +18,7 @@ export const Title = styled.span`
 `
 
 export const SideBar = FlexDivShared.extend`
+  margin-left: 24px;
   border-left: solid 1px rgba(0, 0, 0, 0.14);
   padding: 10px;
   max-width: 220px;

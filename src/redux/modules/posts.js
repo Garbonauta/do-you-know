@@ -149,6 +149,7 @@ const initialState = Map({
   isFetching: true,
   lastUpdated: 0,
   error: '',
+  posts: Map({}),
 })
 
 export default function posts(state = initialState, action) {
@@ -167,26 +168,28 @@ export default function posts(state = initialState, action) {
         isFetching: false,
         lastUpdated: Date.now,
         error: '',
-        ...action.posts,
+        posts: state.get('posts').merge({ ...action.posts }),
       })
     case CLEAR_POSTS:
-      return Map({
-        isFetching: state.get('isFetching'),
-        lastUpdated: state.get('lastUpdated'),
-        error: state.get('error'),
+      return state.merge({
+        posts: Map({}),
       })
     case ADD_POST:
     case SUBMIT_COMMENT:
     case SUBMIT_COMMENT_ERROR:
       return state.merge({
-        [action.postId]: post(state.get(action.postId.toString()), action),
+        posts: state.get('posts').merge({
+          [action.postId]: post(state.get(action.postId.toString()), action),
+        }),
       })
     case ADD_POST_ERROR:
       return state.merge({
         error: action.error,
       })
     case DELETE_POST:
-      return state.delete(action.postId.toString())
+      return state.merge({
+        posts: state.get('posts').delete(action.postId.toString()),
+      })
     default:
       return state.merge({
         error: action.error,
