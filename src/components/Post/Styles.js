@@ -1,5 +1,6 @@
 export const styles = theme => ({
   root: {
+    maxWidth: '800px',
     marginTop: theme.spacing.unit * 3,
   },
   commentRoot: {

@@ -1,5 +1,11 @@
 import styled from 'styled-components'
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
+
 export const EmptyWarn = styled.div`
   background-color: rgba(0, 0, 0, 0.04);
   color: rgba(0, 0, 0, 0.7);

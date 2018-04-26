@@ -1,25 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { NewPostContainer, GroupPostListContainer } from 'containers'
-import { Group, GroupContent, GroupSideBar, GroupHeader } from 'components'
+import { Group } from 'components'
 
 class GroupContainer extends Component {
   static propTypes = {
     isFetching: PropTypes.bool.isRequired,
     accessToken: PropTypes.string.isRequired,
     groupId: PropTypes.number.isRequired,
-    messages: PropTypes.shape({
-      createdBy: PropTypes.string.isRequired,
-      moderators: PropTypes.string.isRequired,
-    }).isRequired,
-    group: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      pictureUrl: PropTypes.string,
-      owner: PropTypes.object,
-      moderators: PropTypes.array,
-    }),
   }
   state = {
     sideBarVisible: true,
@@ -33,34 +21,16 @@ class GroupContainer extends Component {
     })
   }
   render() {
-    const {
-      isFetching,
-      groupId,
-      group: { name, pictureUrl, owner, moderators },
-      messages: { createdBy, moderators: moderatorMsg },
-    } = this.props
-    const { sideBarVisible } = this.state
+    const { isFetching, groupId, group, messages } = this.props
     return (
       !isFetching && (
-        <Group>
-          <GroupHeader
-            title={name}
-            sideBarVisible={sideBarVisible}
-            toggleSideBar={this.toggleSideBar}
-          />
-          <GroupContent>
-            <NewPostContainer groupId={groupId} />
-            <GroupPostListContainer groupId={groupId} />
-          </GroupContent>
-          {sideBarVisible && (
-            <GroupSideBar
-              owner={owner}
-              createdByMsg={createdBy}
-              moderators={moderators}
-              moderatorMsg={moderatorMsg}
-            />
-          )}
-        </Group>
+        <Group
+          groupId={groupId}
+          group={group}
+          sideBarVisible={this.state.sideBarVisible}
+          sideBarAction={this.toggleSideBar}
+          messages={messages}
+        />
       )
     )
   }

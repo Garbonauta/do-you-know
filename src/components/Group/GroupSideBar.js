@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import List, { ListItem, ListItemText } from 'material-ui/List'
+import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import { SideBar, sideBarStyles } from './Styles'
 
@@ -10,41 +11,42 @@ function GroupSideBar({
   createdByMsg,
   moderators,
   moderatorMsg,
-  classes: { list, listItem, listItemText },
+  classes: { list, listItem, listItemText, paperRoot },
 }) {
   return (
     <SideBar>
-      <List
-        className={list}
-        subheader={<Typography variant="caption">{createdByMsg}</Typography>}
-      >
-        <ListItem className={listItem} component="a" href={owner.link}>
-          <ListItemText
-            classes={{ primary: listItemText }}
-            primary={owner.fullName}
-          />
-        </ListItem>
-      </List>
-      <List
-        className={list}
-        subheader={<Typography variant="caption">{moderatorMsg}</Typography>}
-      >
-        {moderators.map(({ userId, fullName, link }) => {
-          return (
-            <ListItem
-              key={userId}
-              className={listItem}
-              component="a"
-              href={link}
-            >
-              <ListItemText
-                classes={{ primary: listItemText }}
-                primary={fullName}
-              />
-            </ListItem>
-          )
-        })}
-      </List>
+      <Paper className={paperRoot}>
+        <List
+          className={list}
+          subheader={<Typography variant="caption">{createdByMsg}</Typography>}
+        >
+          <ListItem className={listItem} component="a" href={owner.link}>
+            <ListItemText
+              classes={{ primary: listItemText }}
+              primary={owner.fullName}
+            />
+          </ListItem>
+        </List>
+        <List
+          subheader={<Typography variant="caption">{moderatorMsg}</Typography>}
+        >
+          {moderators.map(({ userId, fullName, link }) => {
+            return (
+              <ListItem
+                key={userId}
+                className={listItem}
+                component="a"
+                href={link}
+              >
+                <ListItemText
+                  classes={{ primary: listItemText }}
+                  primary={fullName}
+                />
+              </ListItem>
+            )
+          })}
+        </List>
+      </Paper>
     </SideBar>
   )
 }

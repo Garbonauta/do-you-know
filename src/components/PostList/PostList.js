@@ -6,7 +6,7 @@ import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
 import { CircularProgress } from 'material-ui/Progress'
 import { PostContainer } from 'containers'
-import { EmptyWarn, styles } from './Styles'
+import { Container, EmptyWarn, styles } from './Styles'
 
 function PostList({
   isFetching,
@@ -17,7 +17,7 @@ function PostList({
   getNext,
 }) {
   return (
-    <div>
+    <Container>
       {!isFetching &&
         posts.length === 0 && (
           <EmptyWarn className={root}>
@@ -26,19 +26,17 @@ function PostList({
             </Typography>
           </EmptyWarn>
         )}
-      {posts.length > 0 && (
-        <div>
-          {posts.map(post => <PostContainer key={post.postId} post={post} />)}
-          {!isFetching &&
-            getNext && <Observer threshold={0.9} onChange={viewChangeAction} />}
-        </div>
-      )}
+      {posts.length > 0 &&
+        posts.map(post => <PostContainer key={post.postId} post={post} />)}
+      {!isFetching &&
+        posts.length > 0 &&
+        getNext && <Observer threshold={0.9} onChange={viewChangeAction} />}
       {isFetching && (
         <Paper className={root}>
           <CircularProgress className={progress} color="primary" />
         </Paper>
       )}
-    </div>
+    </Container>
   )
 }
 PostList.propTypes = {

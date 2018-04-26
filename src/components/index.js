@@ -1,6 +1,5 @@
 export { default as Callback } from './Callback/Callback'
 export { default as Group } from './Group/Group'
-export { default as GroupContent } from './Group/GroupContent'
 export { default as GroupHeader } from './Group/GroupHeader'
 export { default as GroupSideBar } from './Group/GroupSideBar'
 export { default as Home } from './Home/Home'

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
-export const PostDiv = styled.div`
-`
+export const PostDiv = styled.div``
 
 export const ActionsDiv = styled.div`
   flex: 1;
@@ -16,7 +15,7 @@ export const Form = styled.form`
 
 export const styles = theme => ({
   newPostContainer: {
-    // backgroundColor: theme.palette.primary.lightest,
+    maxWidth: '800px',
     backgroundColor: 'inherit',
   },
 })

@@ -2,7 +2,12 @@ import styled from 'styled-components'
 import { FlexDiv as FlexDivShared } from 'sharedStyles'
 
 export const FlexDiv = FlexDivShared.extend`
+  width: 100%;
   flex-wrap: wrap;
+`
+
+export const Body = FlexDivShared.extend`
+  width: 100%;
 `
 
 export const Content = styled.div`
@@ -19,10 +24,8 @@ export const Title = styled.span`
 
 export const SideBar = FlexDivShared.extend`
   margin-left: 24px;
-  border-left: solid 1px rgba(0, 0, 0, 0.14);
-  padding: 10px;
-  max-width: 220px;
   flex-direction: column;
+  width: 220px;
 `
 
 export const sideBarStyles = theme => ({
@@ -36,4 +39,7 @@ export const sideBarStyles = theme => ({
     color: 'rgba(0, 0, 0, 0.64)',
     fontSize: '0.8em',
   },
+  paperRoot: theme.mixins.gutters({
+    padding: theme.spacing.unit * 3,
+  }),
 })
