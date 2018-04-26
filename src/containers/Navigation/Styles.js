@@ -9,9 +9,7 @@ export const ContentArea = styled.div`
 `
 
 export const ContentContainer = styled.div`
-  display: flex;
   max-width: 1100px;
-  margin: 10px auto;
   margin: ${props => (props.open ? '10px 104px 10px 312px' : '10px auto')};
   padding: 1em 0.5em;
 `
