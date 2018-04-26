@@ -4,7 +4,7 @@ const messages = {
   loading: 'Cargando',
   group: 'Grupos',
   moderators: 'Moderadores',
-  createdBy: 'Creador del Grupo',
+  createdBy: 'Creador',
   yes: 'Sí',
   no: 'No',
   cancel: 'Cancelar',

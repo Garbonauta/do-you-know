@@ -17,6 +17,7 @@ function getPostsArray(obj) {
 
 class PostListContainer extends Component {
   static propTypes = {
+    isFetching: PropTypes.bool.isRequired,
     fetchNextAction: PropTypes.func.isRequired,
     posts: PropTypes.object.isRequired,
     messages: PropTypes.object.isRequired,
@@ -67,7 +68,6 @@ class PostListContainer extends Component {
 
 function mapStateToProps({ users, posts, intl: { messages } }) {
   return {
-    isFetching: posts.get('isFetching'),
     posts: posts.get('posts') || [],
     messages: {
       firstQuestion: messages['postList.firstQuestion'],

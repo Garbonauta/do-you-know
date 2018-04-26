@@ -31,7 +31,12 @@ class GroupPostListContainer extends Component {
     }
   }
   render() {
-    return <PostListContainer fetchNextAction={this.handleGetMorePosts} />
+    return (
+      <PostListContainer
+        isFetching={this.props.isFetching}
+        fetchNextAction={this.handleGetMorePosts}
+      />
+    )
   }
 }
 
