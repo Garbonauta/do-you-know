@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { MenuList, MenuItem } from 'material-ui/Menu'
-import { List, ListItem, SubTitle } from './Styles'
+import { List, ListItem, Icon, SubTitle } from './Styles'
+import IconPicker from 'helpers/IconPicker'
+import { SantaCruz, LaPaz } from 'helpers/svg'
 
 class GroupMenuItem extends PureComponent {
   static propTypes = {
+    open: PropTypes.bool.isRequired,
     group: PropTypes.object.isRequired,
     changeRoute: PropTypes.func.isRequired,
     pathName: PropTypes.string.isRequired,
@@ -14,19 +17,26 @@ class GroupMenuItem extends PureComponent {
     this.props.changeRoute(`/group/${this.props.group.id}`)
   }
   render() {
-    const { id, name } = this.props.group
+    const {
+      open,
+      group: { id, name },
+    } = this.props
     return (
       <ListItem
         onClick={this.handleClick}
         selected={this.props.pathName === `/group/${id}`}
       >
-        {name}
+        <Icon>
+          <IconPicker id={id} />
+        </Icon>
+        {open && name}
       </ListItem>
     )
   }
 }
 
 export default function GroupMenu({
+  open,
   groups,
   selected,
   subheader,
@@ -35,11 +45,12 @@ export default function GroupMenu({
 }) {
   return (
     <List>
-      <SubTitle>{subheader}</SubTitle>
+      <SubTitle>{open && subheader}</SubTitle>
       {groups.map(group => {
         return (
           <GroupMenuItem
             key={group.id}
+            open={open}
             group={group}
             pathName={pathName}
             changeRoute={changeRoute}
@@ -50,6 +61,7 @@ export default function GroupMenu({
   )
 }
 GroupMenu.propTypes = {
+  open: PropTypes.bool.isRequired,
   groups: PropTypes.array,
   pathName: PropTypes.string.isRequired,
   subheader: PropTypes.string.isRequired,

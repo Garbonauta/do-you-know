@@ -25,14 +25,12 @@ class NavigationContainer extends Component {
     const { isAuthed, children } = this.props
 
     return (
-      <AllContent>
+      <AllContent open={this.state.drawerOpen && isAuthed}>
         {isAuthed && <NavBarContainer drawerToggle={this.handleDrawerToggle} />}
         {isAuthed && <NavDrawerContainer open={this.state.drawerOpen} />}
         {isAuthed && <DialogContainer />}
         <ContentArea>
-          <ContentContainer open={this.state.drawerOpen && isAuthed}>
-            {children}
-          </ContentContainer>
+          <ContentContainer>{children}</ContentContainer>
         </ContentArea>
       </AllContent>
     )

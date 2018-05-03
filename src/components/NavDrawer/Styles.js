@@ -3,7 +3,6 @@ import { List as SharedList, ListItem as SharedListItem } from 'sharedStyles'
 
 export const Sidebar = styled.div`
   grid-area: sidebar;
-  margin-right: 16px;
 `
 
 export const List = SharedList.extend``
@@ -26,13 +25,13 @@ export const ListItem = SharedListItem.extend`
   }
 `
 
+export const Icon = styled.span`
+  margin-right: 1em;
+`
+
 export const SubTitle = styled.span`
-  flex: 1;
-  display: flex;
   font-size: 13px;
-  height: 32px;
   padding: 0 0 0 24px;
-  align-items: center;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.54);
 `

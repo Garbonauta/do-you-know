@@ -17,6 +17,7 @@ export const NavGrid = styled.div`
 
 export const NavIcon = styled.div`
   grid-column: iconStart / iconEnd;
+  cursor: pointer;
 `
 
 export const Title = styled.div`

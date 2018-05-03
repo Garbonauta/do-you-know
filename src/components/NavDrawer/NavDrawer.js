@@ -16,6 +16,7 @@ function NavDrawer({
     <Sidebar>
       {!isFetching && (
         <GroupMenu
+          open={open}
           groups={groups}
           pathName={pathName}
           subheader={messages.group}
