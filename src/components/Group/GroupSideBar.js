@@ -7,6 +7,7 @@ import Typography from 'material-ui/Typography'
 import { SideBar, sideBarStyles } from './Styles'
 
 function GroupSideBar({
+  sideBarVisible,
   owner,
   createdByMsg,
   moderators,
@@ -14,7 +15,7 @@ function GroupSideBar({
   classes: { list, listItem, listItemText, paperRoot },
 }) {
   return (
-    <SideBar>
+    <SideBar sideBarVisible={sideBarVisible}>
       <Paper className={paperRoot}>
         <List
           className={list}
@@ -52,6 +53,7 @@ function GroupSideBar({
 }
 
 GroupSideBar.propTypes = {
+  sideBarVisible: PropTypes.bool.isRequired,
   owner: PropTypes.shape({
     userId: PropTypes.string.isRequired,
     fullName: PropTypes.string.isRequired,
@@ -65,7 +67,7 @@ GroupSideBar.propTypes = {
         fullName: PropTypes.string.isRequired,
         link: PropTypes.string.isRequired,
       }),
-    })
+    }),
   ),
   moderatorMsg: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
