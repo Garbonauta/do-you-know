@@ -8,6 +8,7 @@ export const AllContent = styled.div`
 `
 export const ContentArea = styled.div`
   grid-area: content;
+  z-index: 0;
 `
 
 export const ContentContainer = styled.div`

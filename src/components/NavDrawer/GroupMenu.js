@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { MenuList, MenuItem } from 'material-ui/Menu'
-import { List, ListItem, ListText, SubTitle } from './Styles'
+import { List, ListItem, SubTitle } from './Styles'
 
 class GroupMenuItem extends PureComponent {
   static propTypes = {
@@ -20,7 +20,7 @@ class GroupMenuItem extends PureComponent {
         onClick={this.handleClick}
         selected={this.props.pathName === `/group/${id}`}
       >
-        <ListText>{name}</ListText>
+        {name}
       </ListItem>
     )
   }

@@ -1,5 +1,8 @@
 export { default as App } from './App/App'
 export { default as CallbackContainer } from './Callback/CallbackContainer'
+export {
+  default as ClickAwayListener,
+} from './ClickAwayListener/ClickAwayListener'
 export { default as DialogContainer } from './Dialog/DialogContainer'
 export { default as GroupContainer } from './Group/GroupContainer'
 export {

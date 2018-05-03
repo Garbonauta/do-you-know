@@ -36,7 +36,6 @@ NavBar.propTypes = {
   }),
   iconAction: PropTypes.func.isRequired,
   handleHome: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
 }
 
 export default NavBar

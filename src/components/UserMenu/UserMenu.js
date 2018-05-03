@@ -1,12 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Manager, Target, Popper } from 'react-popper'
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener'
-import Grow from 'material-ui/transitions/Grow'
-import Paper from 'material-ui/Paper'
-import { MenuList, MenuItem } from 'material-ui/Menu'
-import Avatar from 'material-ui/Avatar'
-import IconButton from 'material-ui/IconButton'
+import { ClickAwayListener } from 'containers'
+import { Avatar } from 'components'
+import { List, ListItem, Menu } from './Styles'
 
 export default function UserMenu({
   pictureUrl,
@@ -19,25 +16,23 @@ export default function UserMenu({
     <div>
       <Manager>
         <Target>
-          <IconButton onClick={onClick}>
-            <Avatar src={pictureUrl} style={{ cursor: 'pointer' }} />
-          </IconButton>
+          <Avatar onClick={onClick} src={pictureUrl} />
         </Target>
-        <Popper placement="bottom-end" eventsEnabled={open}>
+        <Popper
+          placement="bottom-end"
+          eventsEnabled={open}
+          style={{ zIndex: 1 }}
+        >
           <ClickAwayListener onClickAway={handleClose}>
-            <Grow
-              in={open}
-              id="menu-list-grow"
-              style={{ transformOrigin: '0 0 0' }}
-            >
-              <Paper>
-                <MenuList role="menu">
-                  <MenuItem button={true} onClick={logout}>
+            {open && (
+              <Menu>
+                <List role="menu">
+                  <ListItem button={true} onClick={logout}>
                     {'Log Out'}
-                  </MenuItem>
-                </MenuList>
-              </Paper>
-            </Grow>
+                  </ListItem>
+                </List>
+              </Menu>
+            )}
           </ClickAwayListener>
         </Popper>
       </Manager>

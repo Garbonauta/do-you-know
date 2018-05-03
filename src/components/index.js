@@ -1,3 +1,4 @@
+export { default as Avatar } from './Avatar/Avatar'
 export { default as Callback } from './Callback/Callback'
 export { default as Group } from './Group/Group'
 export { default as GroupHeader } from './Group/GroupHeader'
