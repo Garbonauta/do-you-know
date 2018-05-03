@@ -6,7 +6,7 @@ import {
   NavDrawerContainer,
 } from 'containers'
 import { withStyles } from 'material-ui/styles'
-import { AllContent, ContentContainer, ContentArea, styles } from './Styles'
+import { AllContent, ContentContainer, ContentArea } from './Styles'
 import { Global } from 'sharedStyles'
 
 class NavigationContainer extends Component {
@@ -22,11 +22,7 @@ class NavigationContainer extends Component {
       return { drawerOpen: !prevState.drawerOpen }
     })
   render() {
-    const {
-      isAuthed,
-      children,
-      classes: { content, toolbar },
-    } = this.props
+    const { isAuthed, children } = this.props
 
     return (
       <AllContent>
@@ -34,11 +30,7 @@ class NavigationContainer extends Component {
         {isAuthed && <NavDrawerContainer open={this.state.drawerOpen} />}
         {isAuthed && <DialogContainer />}
         <ContentArea>
-          <div className={toolbar} />
-          <ContentContainer
-            open={this.state.drawerOpen && isAuthed}
-            className={content}
-          >
+          <ContentContainer open={this.state.drawerOpen && isAuthed}>
             {children}
           </ContentContainer>
         </ContentArea>
@@ -47,4 +39,4 @@ class NavigationContainer extends Component {
   }
 }
 
-export default withStyles(styles)(NavigationContainer)
+export default NavigationContainer

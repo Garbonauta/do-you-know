@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { MenuList, MenuItem } from 'material-ui/Menu'
-import { ListItemText, ListSubheader } from 'material-ui/List'
+import { List, ListItem, ListText, SubTitle } from './Styles'
 
 class GroupMenuItem extends PureComponent {
   static propTypes = {
@@ -16,13 +16,12 @@ class GroupMenuItem extends PureComponent {
   render() {
     const { id, name } = this.props.group
     return (
-      <MenuItem
-        key={id}
+      <ListItem
         onClick={this.handleClick}
         selected={this.props.pathName === `/group/${id}`}
       >
-        <ListItemText inset={true} primary={name} />
-      </MenuItem>
+        <ListText>{name}</ListText>
+      </ListItem>
     )
   }
 }
@@ -35,7 +34,8 @@ export default function GroupMenu({
   changeRoute,
 }) {
   return (
-    <MenuList subheader={<ListSubheader>{subheader}</ListSubheader>}>
+    <List>
+      <SubTitle>{subheader}</SubTitle>
       {groups.map(group => {
         return (
           <GroupMenuItem
@@ -46,7 +46,7 @@ export default function GroupMenu({
           />
         )
       })}
-    </MenuList>
+    </List>
   )
 }
 GroupMenu.propTypes = {

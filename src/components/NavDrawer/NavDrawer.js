@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
-import Drawer from 'material-ui/Drawer'
-import { styles } from './Styles'
+import { Sidebar } from './Styles'
 import GroupMenu from './GroupMenu'
 
 function NavDrawer({
@@ -13,15 +11,9 @@ function NavDrawer({
   messages,
   pathName,
   changeRoute,
-  classes: { toolbar, paper, anchorLeft },
 }) {
   return (
-    <Drawer
-      variant="persistent"
-      open={open}
-      classes={{ paper: paper, paperAnchorDockedLeft: anchorLeft }}
-    >
-      <div className={toolbar} />
+    <Sidebar>
       {!isFetching && (
         <GroupMenu
           groups={groups}
@@ -30,7 +22,7 @@ function NavDrawer({
           changeRoute={changeRoute}
         />
       )}
-    </Drawer>
+    </Sidebar>
   )
 }
 NavDrawer.propTypes = {
@@ -41,9 +33,8 @@ NavDrawer.propTypes = {
   messages: PropTypes.shape({
     group: PropTypes.string.isRequired,
   }).isRequired,
-  classes: PropTypes.object.isRequired,
   pathName: PropTypes.string.isRequired,
   changeRoute: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(NavDrawer)
+export default NavDrawer
