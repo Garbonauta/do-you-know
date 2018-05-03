@@ -1,5 +1,12 @@
 import styled from 'styled-components'
-import { FlexDiv as FlexDivShared } from 'sharedStyles'
+import {
+  FlexDiv,
+  Paper as PaperShared,
+  Link as LinkShared,
+  List as ListShared,
+  ListItem as ListItemShared,
+} from 'sharedStyles'
+import { headerColor } from 'sharedStyles/vars'
 
 export const GroupGrid = styled.div`
   width: 100%;
@@ -21,10 +28,17 @@ export const Header = styled.div`
   grid-area: header;
 `
 
-export const Title = styled.span`
+export const HeaderContainer = FlexDiv.extend`
+  align-items: center;
+`
+
+export const Title = styled.h2`
   flex: 1;
 `
 
+export const IconButton = styled.div`
+  cursor: pointer;
+`
 export const SideBar = styled.div`
   ${props => {
     console.log(props)
@@ -34,18 +48,27 @@ export const SideBar = styled.div`
   }};
 `
 
-export const sideBarStyles = theme => ({
-  list: {
-    marginBottom: '32px',
-  },
-  listItem: {
-    padding: '5px 0 0 0 ',
-  },
-  listItemText: {
-    color: 'rgba(0, 0, 0, 0.64)',
-    fontSize: '0.8em',
-  },
-  paperRoot: theme.mixins.gutters({
-    padding: theme.spacing.unit * 3,
-  }),
-})
+export const Paper = PaperShared.extend`
+  padding: 1em;
+`
+
+export const List = ListShared.extend`
+  grid-template-rows: repeat(auto-fit, 1em);
+  grid-auto-rows: 1em;
+
+  &:not(:last-child) {
+    margin-bottom: 2em;
+  }
+`
+
+export const ListItem = ListItemShared.extend`
+  font-size: 0.8em;
+`
+
+export const Subheader = ListItemShared.extend`
+  font-size: 0.7em;
+  color: ${headerColor};
+  font-weight: 700;
+`
+
+export const Link = LinkShared.extend``

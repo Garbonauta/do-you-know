@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-const List = styled.div`
+const List = styled.ul`
   display: grid;
-  grid-template-rows: repeat(auto-fit, 32px);
-  grid-auto-rows: 32px;
   align-items: center;
+  padding: 0;
+  margin: 0;
 `
 
 export default List

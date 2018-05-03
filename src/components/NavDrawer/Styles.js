@@ -1,11 +1,15 @@
 import styled from 'styled-components'
 import { List as SharedList, ListItem as SharedListItem } from 'sharedStyles'
+import { headerColor } from 'sharedStyles/vars'
 
 export const Sidebar = styled.div`
   grid-area: sidebar;
 `
 
-export const List = SharedList.extend``
+export const List = SharedList.extend`
+  grid-template-rows: repeat(auto-fit, 32px);
+  grid-auto-rows: 32px;
+`
 
 export const ListItem = SharedListItem.extend`
   padding: 0 12px 0 24px;
@@ -33,5 +37,5 @@ export const SubTitle = styled.span`
   font-size: 13px;
   padding: 0 0 0 24px;
   font-weight: 700;
-  color: rgba(0, 0, 0, 0.54);
+  color: ${headerColor};
 `
