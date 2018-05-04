@@ -1,14 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  SideBar,
-  sideBarStyles,
-  Paper,
-  Link,
-  List,
-  ListItem,
-  Subheader,
-} from './Styles'
+import { SideBar, Paper, Link, List, ListItem, Subheader } from './Styles'
 
 function GroupSideBar({
   sideBarVisible,

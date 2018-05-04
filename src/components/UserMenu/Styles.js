@@ -1,5 +1,4 @@
 import {
-  Avatar,
   List as SharedList,
   ListItem as SharedListItem,
   Paper,
@@ -9,7 +8,10 @@ export const Menu = Paper.extend`
   display: grid;
 `
 
-export const List = SharedList.extend``
+export const List = SharedList.extend`
+  grid-template-rows: repeat(auto-fit, 48px);
+  grid-auto-rows: 48px;
+`
 
 export const ListItem = SharedListItem.extend`
   cursor: pointer;

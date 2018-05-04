@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { MenuList, MenuItem } from 'material-ui/Menu'
 import { List, ListItem, Icon, SubTitle } from './Styles'
 import IconPicker from 'helpers/IconPicker'
-import { SantaCruz, LaPaz } from 'helpers/svg'
 
 class GroupMenuItem extends PureComponent {
   static propTypes = {

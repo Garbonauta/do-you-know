@@ -53,8 +53,8 @@ export const Paper = PaperShared.extend`
 `
 
 export const List = ListShared.extend`
-  grid-template-rows: repeat(auto-fit, 1em);
-  grid-auto-rows: 1em;
+  grid-template-rows: repeat(auto-fit, 1.3em);
+  grid-auto-rows: 1.3em;
 
   &:not(:last-child) {
     margin-bottom: 2em;
@@ -63,6 +63,8 @@ export const List = ListShared.extend`
 
 export const ListItem = ListItemShared.extend`
   font-size: 0.8em;
+  padding-top: 0.1em;
+  overflow: hidden;
 `
 
 export const Subheader = ListItemShared.extend`
@@ -71,4 +73,10 @@ export const Subheader = ListItemShared.extend`
   font-weight: 700;
 `
 
-export const Link = LinkShared.extend``
+export const Link = LinkShared.extend`
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+`

@@ -5,7 +5,6 @@ import {
   NavBarContainer,
   NavDrawerContainer,
 } from 'containers'
-import { withStyles } from 'material-ui/styles'
 import { AllContent, ContentContainer, ContentArea } from './Styles'
 import { Global } from 'sharedStyles'
 
